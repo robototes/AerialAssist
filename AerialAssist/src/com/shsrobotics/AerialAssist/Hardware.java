@@ -1,14 +1,11 @@
-
 package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.GLOBAL;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 
 /**
- *
- * @author Max
+ * @author Team 2412
  */
 public interface Hardware extends GLOBAL {
-    AxisCamera camera = AxisCamera.getInstance();
-    
+    public static final AxisCamera camera = AxisCamera.getInstance();
 }
