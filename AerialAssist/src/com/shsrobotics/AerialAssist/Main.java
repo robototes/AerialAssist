@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.FRCRobot;
@@ -10,8 +6,7 @@ import edu.wpi.first.wpilibj.image.NIVision;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 
 /**
- *
- * @author Max
+ * @author Team 2412
  */
 public class Main extends FRCRobot implements Maps {
     
@@ -21,12 +16,8 @@ public class Main extends FRCRobot implements Maps {
         try {
             Images.startImage = camera.getImage();
         }
-        catch (AxisCameraException ace) {
-            
-        }
-        catch (NIVisionException nive) {
-            
-        }
+        catch (AxisCameraException ace) { }
+        catch (NIVisionException nive) { }
         
     }
     
@@ -35,12 +26,8 @@ public class Main extends FRCRobot implements Maps {
             Images.afterImage = camera.getImage();
             NIVision.
         }
-        catch (AxisCameraException ace) {
-            
-        }
-        catch (NIVisionException nive) {
-            
-        }
+        catch (AxisCameraException ace) { }
+        catch (NIVisionException nive) { }
     }
     
     public void autonomousPeriodic() {
