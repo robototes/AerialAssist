@@ -26,7 +26,7 @@ public class Main extends FRCRobot implements Hardware {
             Images.afterImage = camera.getImage();
             Images.subtractedImage = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
 			
-			NIVision.subract(Images.subtractedImage, Images.afterImage.image, Images.startImage.image);
+			NIVision.subtract(Images.subtractedImage, Images.afterImage.image, Images.startImage.image);
 			
 			//compare here
         }
