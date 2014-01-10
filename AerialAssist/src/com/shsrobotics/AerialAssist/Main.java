@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 /**
  * @author Team 2412
  */
-public class Main extends FRCRobot implements Maps {
+public class Main extends FRCRobot implements Hardware {
     
     
     
@@ -24,7 +24,11 @@ public class Main extends FRCRobot implements Maps {
     public void autonomousInit() {
         try {
             Images.afterImage = camera.getImage();
-            NIVision.
+            Images.subtractedImage = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
+			
+			NIVision.subract(Images.subtractedImage, Images.afterImage.image, Images.startImage.image);
+			
+			//compare here
         }
         catch (AxisCameraException ace) { }
         catch (NIVisionException nive) { }
