@@ -1,6 +1,8 @@
 package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.GLOBAL;
+import com.shsrobotics.library.JoystickButton;
+import com.shsrobotics.library.joysticks.Attack3Controller;
 import com.sun.cldc.jna.Pointer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -12,10 +14,27 @@ import edu.wpi.first.wpilibj.image.NIVision;
  */
 public interface Maps extends GLOBAL {
  
-	public static final Joystick joystick = new Joystick(USB_1);
+	public static final Joystick driveStick = new Joystick(USB_1);
+	public static final Joystick switchStick = new Joystick(USB_2);
 	
 	public static final AxisCamera.ResolutionT	imageResolution = AxisCamera.ResolutionT.k160x120; 
 	public static final NIVision.Rect fullImage = new NIVision.Rect(0, 0, imageResolution.height, imageResolution.width);
+	
+	public static final class Buttons {
+		public static final JoystickButton launchCatapult = new JoystickButton(driveStick, Attack3Controller.baseCenterLeft);
+		public static final JoystickButton launchCatapultHigh = new JoystickButton(driveStick, Attack3Controller.topLeft);
+		public static final JoystickButton launchCatapultLow = new JoystickButton(driveStick, Attack3Controller.topUp);
+		
+		public static final JoystickButton pickupDown = new JoystickButton(driveStick, Attack3Controller.baseCenterRight);
+		public static final JoystickButton pickupUp = new JoystickButton(driveStick, Attack3Controller.baseFrontLeft);
+		
+		public static final JoystickButton defenseUp = new JoystickButton(driveStick, Attack3Controller.baseFrontRight);
+		public static final JoystickButton defenseDown = new JoystickButton(driveStick, Attack3Controller.baseRearLeft);
+		
+		public static final JoystickButton driveScale = new JoystickButton(driveStick, Attack3Controller.baseRearRight);
+		
+		public static final JoystickButton setLaserPoiter = new JoystickButton(driveStick, Attack3Controller.topDown);
+	}
 	
     public static final class Images {
         public static Image start;
@@ -51,6 +70,11 @@ public interface Maps extends GLOBAL {
 			private Position(int value) {
 				this.value = value;
 			}
+		}
+		
+		public static final class CatapultPower {
+			public static final boolean HIGH = true;
+			public static final boolean LOW = false;
 		}
 	}
 }
