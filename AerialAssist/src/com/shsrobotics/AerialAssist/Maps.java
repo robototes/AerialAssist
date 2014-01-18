@@ -3,6 +3,7 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.GLOBAL;
 import com.shsrobotics.library.JoystickButton;
 import com.shsrobotics.library.joysticks.Attack3Controller;
+import com.shsrobotics.library.joysticks.Extreme3DController;
 import com.sun.cldc.jna.Pointer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -33,7 +34,10 @@ public interface Maps extends GLOBAL {
 		
 		public static final JoystickButton driveScale = new JoystickButton(driveStick, Attack3Controller.baseRearRight);
 		
-		public static final JoystickButton setLaserPoiter = new JoystickButton(driveStick, Attack3Controller.topDown);
+		public static final JoystickButton setLaserPointer = new JoystickButton(driveStick, Extreme3DController.baseRearLeft);
+		
+		public static final JoystickButton rotateLaser = new JoystickButton(driveStick, Extreme3DController.trigger);
+		public static final JoystickButton switchRotation = new JoystickButton(driveStick, Extreme3DController.side);
 	}
 	
     public static final class Images {
