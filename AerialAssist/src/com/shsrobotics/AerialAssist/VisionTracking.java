@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.shsrobotics.AerialAssist;
 
 import com.sun.cldc.jna.Pointer;
@@ -51,16 +47,14 @@ public class VisionTracking implements Hardware{
 			return HOT_GOAL_LEFT; 
 		}
 		return HOT_GOAL_RIGHT;
-		
-		/* if (Maps.Field.robotPosition == Maps.Field.Position.left
-			|| Maps.Field.robotPosition == Maps.Field.Position.right) { // robot is on left
-			if (!Maps.Field.Goal.left.isHot && Maps.Field.robotPosition == Maps.Field.Position.right) { // incorrect side
-				Timer.delay(3); // wait until goal switches
-			}
-			if (!Maps.Field.Goal.right.isHot && Maps.Field.robotPosition == Maps.Field.Position.left) { // incorrect side
-				Timer.delay(3); // wait until goal switches
-			}
-		} */
 	}
 	
+	public static boolean correctSide() {
+		if (!Maps.Field.Goal.left.isHot && Maps.Field.robotPosition == Maps.Field.Position.left ||
+			!Maps.Field.Goal.right.isHot && Maps.Field.robotPosition == Maps.Field.Position.right) { // incorrect side
+				Timer.delay(3); // wait until goal switches
+				return false;
+		}
+			return true;
+	}
 }

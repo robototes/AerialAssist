@@ -2,9 +2,7 @@ package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.GLOBAL;
 import com.shsrobotics.library.JoystickButton;
-import com.shsrobotics.library.joysticks.Attack3Controller;
 import com.shsrobotics.library.joysticks.Extreme3DController;
-import com.sun.cldc.jna.Pointer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.image.Image;
@@ -18,22 +16,24 @@ public interface Maps extends GLOBAL {
 	public static final Joystick driveStick = new Joystick(USB_1);
 	public static final Joystick switchStick = new Joystick(USB_2);
 	
+	public static final boolean LATCH_IN = false;
+    public static final boolean LATCH_OUT = true;
+	
 	public static final AxisCamera.ResolutionT	imageResolution = AxisCamera.ResolutionT.k160x120; 
 	public static final NIVision.Rect fullImage = new NIVision.Rect(0, 0, imageResolution.height, imageResolution.width);
 	
 	public static final class Buttons {
-		public static final JoystickButton launchCatapult = new JoystickButton(driveStick, Attack3Controller.baseCenterLeft);
-		public static final JoystickButton launchCatapultHigh = new JoystickButton(driveStick, Attack3Controller.topLeft);
-		public static final JoystickButton launchCatapultLow = new JoystickButton(driveStick, Attack3Controller.topUp);
-		
-		public static final JoystickButton pickupDown = new JoystickButton(driveStick, Attack3Controller.baseCenterRight);
-		public static final JoystickButton pickupUp = new JoystickButton(driveStick, Attack3Controller.baseFrontLeft);
-		
-		public static final JoystickButton defenseUp = new JoystickButton(driveStick, Attack3Controller.baseFrontRight);
-		public static final JoystickButton defenseDown = new JoystickButton(driveStick, Attack3Controller.baseRearLeft);
-		
-		public static final JoystickButton driveScale = new JoystickButton(driveStick, Attack3Controller.baseRearRight);
-		
+		public static final JoystickButton launchCatapultLow = new JoystickButton(driveStick, Extreme3DController.topTopLeft);
+        public static final JoystickButton launchCatapultHigh = new JoystickButton(driveStick, Extreme3DController.topTopRight);
+                
+        public static final JoystickButton pickupForward = new JoystickButton(driveStick, Extreme3DController.topBottomLeft);
+        public static final JoystickButton pickupBackward = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
+                
+        public static final JoystickButton defenseUp = new JoystickButton(driveStick, Extreme3DController.baseFrontLeft);
+        public static final JoystickButton defenseDown = new JoystickButton(driveStick, Extreme3DController.baseFrontRight);
+                
+        public static final JoystickButton driveScale = new JoystickButton(driveStick, Extreme3DController.side);
+                
 		public static final JoystickButton setLaserPointer = new JoystickButton(driveStick, Extreme3DController.baseRearLeft);
 		
 		public static final JoystickButton rotateLaser = new JoystickButton(driveStick, Extreme3DController.trigger);
@@ -45,6 +45,10 @@ public interface Maps extends GLOBAL {
         public static Image after;
 		public static Image subtract;
     }
+	
+	public static final class Drive {
+			public static final double DRIVE_SCALE = 0.2;
+	}
 	
 	public static final class Field {
 		public static Field.Position robotPosition;
