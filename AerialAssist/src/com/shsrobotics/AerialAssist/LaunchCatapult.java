@@ -1,0 +1,60 @@
+package com.shsrobotics.AerialAssist;
+
+import com.shsrobotics.library.Task;
+import edu.wpi.first.wpilibj.Timer;
+
+/**
+ * For high shooter
+ * 1. Load the pistons with air
+ * 2. Wait for the pistons to be fully loaded (test time)
+ * 3. Release the firing pin
+ * 4. Wait a little for the launch to complete (test time)
+ * 5. Turn off air in pistons
+ * 6. Wait for pistons to come back down (test time)
+ * 7. Latch the firing pin
+ * 
+ * For low shooter
+ * 1. Release the firing pin
+ * 2. Load the pistons with air
+ * 3. Wait a little for the launch to complete (test time)
+ * 4. Turn off air in pistons
+ * 5. Wait for pistons to come back down (test time)
+ * 6. Latch the firing pin
+ * 
+ * @author RoboTotes Team 2412
+ */
+public class LaunchCatapult extends Task implements Hardware {
+        
+        
+        public static boolean preCharged;
+        public LaunchCatapult(boolean pow) {
+                preCharged = pow;
+        }
+
+        protected void initialize() {
+                if (preCharged) {
+                        Catapult.launch.set(EXTENDED);
+                        Timer.delay(1.0);
+                        Catapult.latch.set(LATCH_OUT);
+                        Timer.delay(0.5);
+                }
+                else {
+                        Catapult.latch.set(LATCH_OUT);
+                        Catapult.launch.set(EXTENDED);
+                        Timer.delay(2.0);
+                }
+        }
+
+        protected void execute() { }
+
+        protected boolean isFinished() {
+                return true;
+        }
+
+        protected void end() {
+                Catapult.launch.set(RETRACTED);
+                Timer.delay(3.0);
+                Catapult.latch.set(LATCH_IN);
+        }
+        
+}
