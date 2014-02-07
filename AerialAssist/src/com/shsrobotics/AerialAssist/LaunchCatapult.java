@@ -24,37 +24,42 @@ import edu.wpi.first.wpilibj.Timer;
  * @author RoboTotes Team 2412
  */
 public class LaunchCatapult extends Task implements Hardware {
-        
-        
-        public static boolean preCharged;
-        public LaunchCatapult(boolean pow) {
-                preCharged = pow;
-        }
+	private boolean preCharged;
+	public static boolean inProgress = false;
+    
+	public LaunchCatapult(boolean pow) {
+		preCharged = pow;
+	}
 
-        protected void initialize() {
-                if (preCharged) {
-                        Catapult.launch.set(EXTENDED);
-                        Timer.delay(1.0);
-                        Catapult.latch.set(LATCH_OUT);
-                        Timer.delay(0.5);
-                }
-                else {
-                        Catapult.latch.set(LATCH_OUT);
-                        Catapult.launch.set(EXTENDED);
-                        Timer.delay(2.0);
-                }
-        }
+	protected void initialize() {
+		if (!inProgress) {
+			inProgress = true;
+			if (preCharged) {
+				System.out.println("High is running");
+				Catapult.launch.set(EXTENDED);
+				Timer.delay(1.0);
+				Catapult.latch.set(LATCH_OUT);
+				Timer.delay(0.5);
+			} else {
+				System.out.println("Low is running");
+				Catapult.latch.set(LATCH_OUT);
+				Catapult.launch.set(EXTENDED);
+				Timer.delay(2.0);
+			}
+			inProgress = false;
+		}
+	}
 
-        protected void execute() { }
+	protected void execute() { }
 
-        protected boolean isFinished() {
-                return true;
-        }
+	protected boolean isFinished() {
+		return true;
+	}
 
-        protected void end() {
-                Catapult.launch.set(RETRACTED);
-                Timer.delay(3.0);
-                Catapult.latch.set(LATCH_IN);
-        }
-        
+	protected void end() {
+		Catapult.launch.set(RETRACTED);
+		Timer.delay(3.0);
+		Catapult.latch.set(LATCH_IN);
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.shsrobotics.AerialAssist;
 
 import com.sun.squawk.util.MathUtils;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
@@ -9,6 +10,7 @@ import com.sun.squawk.util.MathUtils;
 public class Drive implements Hardware {
 	public static IIR xIIR = new IIR();
 	public static IIR yIIR = new IIR();
+    
 	public static void drive() {
 		double x = xIIR.output(driveStick.getX());
 		double y = yIIR.output(driveStick.getY());
@@ -21,11 +23,15 @@ public class Drive implements Hardware {
 		else {
 			DriveBase.drive.arcadeDrive(x, y);
 		}
-		
 	}
-	
-	// x value iir cubing
-	// y value iir quinting
+    public static void driveForTime(double seconds) {
+        timer.reset();
+        timer.start();
+        
+        while (timer.get() < seconds) {
+            drive();
+        }
+    }
 	
 	private static double driveScaleFunction(double x) {
 		return (x-Maps.Drive.DRIVE_SCALE)*(x-Maps.Drive.DRIVE_SCALE)*(x-Maps.Drive.DRIVE_SCALE) -  Maps.Drive.DRIVE_SCALE;
