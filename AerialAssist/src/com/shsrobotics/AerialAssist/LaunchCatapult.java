@@ -24,25 +24,25 @@ import edu.wpi.first.wpilibj.Timer;
  * @author RoboTotes Team 2412
  */
 public class LaunchCatapult extends Task implements Hardware {
-	private boolean preCharged;
+	private int preCharged;
 	public static boolean inProgress = false;
     
-	public LaunchCatapult(boolean pow) {
-		preCharged = pow;
+	public LaunchCatapult(int power) {
+		preCharged = power;
 	}
 
 	protected void initialize() {
 		if (!inProgress) {
 			inProgress = true;
-			if (preCharged) {
+			if (preCharged == LAUNCH_POWER_HIGH) {
 				System.out.println("High is running");
 				Catapult.launch.set(EXTENDED);
 				Timer.delay(1.0);
-				Catapult.latch.set(LATCH_OUT);
+				Catapult.latch.set(false); // release latch
 				Timer.delay(0.5);
 			} else {
 				System.out.println("Low is running");
-				Catapult.latch.set(LATCH_OUT);
+				Catapult.latch.set(false); // release latch
 				Catapult.launch.set(EXTENDED);
 				Timer.delay(2.0);
 			}
@@ -59,7 +59,7 @@ public class LaunchCatapult extends Task implements Hardware {
 	protected void end() {
 		Catapult.launch.set(RETRACTED);
 		Timer.delay(3.0);
-		Catapult.latch.set(LATCH_IN);
+		Catapult.latch.set(true); // set the latch
 	}
 
 }

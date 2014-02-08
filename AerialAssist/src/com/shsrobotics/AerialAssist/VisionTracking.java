@@ -57,7 +57,6 @@ public class VisionTracking implements Hardware {
         VisionTracking.detectSide();
 		if (!Goal.left.isHot && Field.robotPosition == Position.left ||
 			!Goal.right.isHot && Field.robotPosition == Position.right) { // incorrect side
-				Timer.delay(3); // wait until goal switches
 				return false;
 		}
 		return true;

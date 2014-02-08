@@ -25,7 +25,7 @@ public class Main extends FRCRobot implements Hardware {
         // Move to proper location
         // Shoot
         if(VisionTracking.correctSide()) {
-            // shoot
+            new LaunchCatapult(LAUNCH_POWER_HIGH);
         }
     }
     
@@ -39,15 +39,22 @@ public class Main extends FRCRobot implements Hardware {
 
         // loaded
         SmartDashboard.putBoolean(SmartDashboardKeys.KEY_LOADED, Pickup.loaded.get());
+        SmartDashboard.putNumber("Speed", 0.0);
         
         // arms
-		Pickup.arms.set(Buttons.armsForward.held() ? EXTENDED : RETRACTED); // solenoid 1 (extended) & 2 (retracted)
+		// Pickup.arms.set(Buttons.armsForward.held() ? EXTENDED : RETRACTED); // solenoid 1 (extended) & 2 (retracted)
         
         // spin wheels
-        if (Buttons.pickup.held()) {
+        /* if (Buttons.pickup.held()) {
             LoadBall.load(Pickup.arms.get() == EXTENDED);
         } else {
             LoadBall.stopLoading();
+        } */
+        
+        if (Buttons.pickup.held()) {
+            testWheels.set(SmartDashboard.getNumber("Speed"));
+        } else {
+            testWheels.set(0.0);
         }
         
         // gear shifting
@@ -69,7 +76,7 @@ public class Main extends FRCRobot implements Hardware {
 		}
 		
         // shoot
-		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(true));
-		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(false));
+		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(LAUNCH_POWER_HIGH));
+		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(LAUNCH_POWER_LOW));
     }
 }

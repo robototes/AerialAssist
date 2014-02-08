@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class Drive implements Hardware {
 	public static IIR xIIR = new IIR();
 	public static IIR yIIR = new IIR();
+    public static boolean driveDirection = true; // true positive, false negative
     
 	public static void drive() {
 		double x = xIIR.output(driveStick.getX());
@@ -18,10 +19,18 @@ public class Drive implements Hardware {
 		y = MathUtils.pow(y, 5);
 		
 		if (!Maps.Buttons.driveScale.held()) {
-			DriveBase.drive.arcadeDrive(driveScaleFunction(x), driveScaleFunction(y));
+            if (driveDirection) {
+                DriveBase.drive.arcadeDrive(driveScaleFunction(x), driveScaleFunction(y));
+            } else {
+                DriveBase.drive.arcadeDrive(driveScaleFunction(-x), driveScaleFunction(-y));
+            }
 		}
 		else {
-			DriveBase.drive.arcadeDrive(x, y);
+            if (driveDirection) {
+                DriveBase.drive.arcadeDrive(x, y);
+            } else {
+                DriveBase.drive.arcadeDrive(-x, -y);
+            }
 		}
 	}
     public static void driveForTime(double seconds) {
@@ -33,6 +42,9 @@ public class Drive implements Hardware {
         }
     }
 	
+    public static void reverseDirection() {
+        driveDirection = !driveDirection;
+    }
 	private static double driveScaleFunction(double x) {
 		return (x-Maps.Drive.DRIVE_SCALE)*(x-Maps.Drive.DRIVE_SCALE)*(x-Maps.Drive.DRIVE_SCALE) -  Maps.Drive.DRIVE_SCALE;
 	}

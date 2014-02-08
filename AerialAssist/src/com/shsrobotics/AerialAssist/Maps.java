@@ -17,11 +17,11 @@ public interface Maps extends GLOBAL {
 	public static final Joystick driveStick = new Joystick(USB_1);
 	public static final Joystick switchStick = new Joystick(USB_2);
 
-	public static final boolean LATCH_IN = false;
-    public static final boolean LATCH_OUT = true;
+	public static final int LAUNCH_POWER_HIGH = 1;
+    public static final int LAUNCH_POWER_LOW = 2;
     
-    public static final boolean LOAD_FORWARD = true;
-    public static final boolean LOAD_BACKWARD = false;
+    public static final int LOAD_FORWARD = 3;
+    public static final int LOAD_BACKWARD = 4;
     
     public static final Timer timer = new Timer();
 	
@@ -41,9 +41,9 @@ public interface Maps extends GLOBAL {
         public static final JoystickButton shift = new JoystickButton(driveStick, Extreme3DController.baseRearRight);
         
 		public static final JoystickButton setLaserPointer = new JoystickButton(driveStick, Extreme3DController.baseRearLeft);
-		
-		public static final JoystickButton laserForward = new JoystickButton(driveStick, Extreme3DController.trigger);
-		public static final JoystickButton laserBackward = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
+        
+        public static final JoystickButton reverse = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
+        
 	}
 	
     public static final class Images {
@@ -70,6 +70,7 @@ public interface Maps extends GLOBAL {
 			public static final Field.Goal left = new Field.Goal(1);
 			public static final Field.Goal right = new Field.Goal(2);
 			
+            
 			private final int value;
 			public boolean isHot = false;
 			
@@ -81,7 +82,7 @@ public interface Maps extends GLOBAL {
 				this.isHot = isHot;
 			}
 		}
-		
+        
 		public static final class Position {
 			public static final Field.Position left = new Field.Position(1);
 			public static final Field.Position right = new Field.Position(2);
@@ -94,8 +95,8 @@ public interface Maps extends GLOBAL {
 		}
 		
 		public static final class CatapultPower {
-			public static final boolean HIGH = true;
-			public static final boolean LOW = false;
+			public static final int HIGH = 0;
+			public static final int LOW = 1;
 		}
         
 	}
