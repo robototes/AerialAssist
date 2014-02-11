@@ -34,7 +34,7 @@ public class LaunchCatapult extends Task implements Hardware {
 	protected void initialize() {
 		if (!inProgress) {
 			inProgress = true;
-			if (preCharged == CatapultPower.HIGH) {
+			if (preCharged) { // high
 				Catapult.setLauncher(EXTENDED);
 				Timer.delay(1.0);
 				Catapult.latch.set(false); // release latch

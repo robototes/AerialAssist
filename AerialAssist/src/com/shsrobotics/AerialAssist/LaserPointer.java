@@ -18,6 +18,6 @@ public class LaserPointer implements Hardware {
 	}
 	
 	public static void set() {
-		LaserPoint.servo.setAngle(Math.toDegrees(calculateLaserAngle(SmartDashboard.getNumber("Other Robot Height"))));
+	//	LaserPoint.servo.setAngle(Math.toDegrees(calculateLaserAngle(SmartDashboard.getNumber("Other Robot Height"))));
 	}	
 }

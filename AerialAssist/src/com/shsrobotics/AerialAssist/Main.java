@@ -11,16 +11,16 @@ public class Main extends FRCRobot implements Hardware {
     
 	public void disabledInit() {
         //VisionTracking.initializer();
-        Timer.delay(5);
+        //Timer.delay(5);
     }
 	
 	public void disabledPeriodic() {
         //VisionTracking.getInitialImage();
-        Timer.delay(1);
+        //Timer.delay(1);
 	}
 	
     public void autonomousInit() {
-        compressor.start();
+        //compressor.start();
         /*
         VisionTracking.run();
         DriveRobot.driveForTime(3.0);
@@ -34,32 +34,33 @@ public class Main extends FRCRobot implements Hardware {
     
     
     public void teleopInit() {
-        compressor.start();
+        // compressor.start();
         Catapult.setLauncher(RETRACTED);
         DriveBase.shifter.set(Drive.HIGH_GEAR);
-        LaserPointer.set();
+        // LaserPointer.set();
     }
 	
     public void teleopPeriodic() {
         // arms
-		Pickup.arms.set(Buttons.armsForward.held()); // solenoid 1 (extended) & 2 (retracted)
+		Pickup.arms.set(Buttons.armsForward.held());
         
         // spin wheels
-        if (Buttons.pickup.held()) {
+        if(Buttons.pickup.held()) {
             LoadBall.load(Pickup.arms.get());
         } else {
             LoadBall.stopLoading();
         } 
         
         // gear shifting
-        if (Buttons.shift.pressed()) {
+        if(Buttons.shift.pressed()) {
             DriveBase.shifter.set(
                 DriveBase.shifter.get().equals(Drive.HIGH_GEAR) ? Drive.LOW_GEAR : Drive.HIGH_GEAR);
         }
         
         // drive
-		DriveRobot.drive();
-		
+		//DriveRobot.drive();
+		DriveBase.drive.arcadeDrive(driveStick);
+        
         // shoot
 		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
 		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));

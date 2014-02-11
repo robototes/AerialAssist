@@ -22,7 +22,7 @@ public class VisionTracking implements Hardware {
     
     public static void getInitialImage() {
         try {
-            Images.start = camera.getImage(); 
+           // Images.start = camera.getImage(); 
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class VisionTracking implements Hardware {
     }
     
     public static void initializer() {
-        camera.writeResolution(Camera.imageResolution);
+        // camera.writeResolution(Camera.imageResolution);
  		
  		NetworkTable configuration = NetworkTable.getTable("configuration");
  		Field.robotPosition = (Field.Position) configuration.getValue("Initial Position", Field.Position.right); // default is right
@@ -48,7 +48,7 @@ public class VisionTracking implements Hardware {
 			Pointer subtracted = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
 			Pointer grayscale = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageU8, 0);
 			Timer.delay(3); // three second delay
-            Images.after = camera.getImage();
+            // Images.after = camera.getImage();
 			NIVision.subtract(subtracted, Images.after.image, Images.start.image); // subtract two images
 			NIVision.extractColorPlanes(
                 subtracted, NIVision.ColorMode.IMAQ_HSL, null, null, grayscale); // convert to grayscale

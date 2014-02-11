@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.camera.AxisCamera;
  * @author Team 2412
  */
 public interface Hardware extends Maps {
-	public static final Compressor compressor = new Compressor(DIGITAL_IO_1, RELAY_1);
-    public static final AxisCamera camera = AxisCamera.getInstance("10.24.12.11");
+	// public static final Compressor compressor = new Compressor(DIGITAL_IO_1, RELAY_1);
+    // public static final AxisCamera camera = AxisCamera.getInstance("10.24.12.11");
     
 	public static final class DriveBase {
 		public static final Talon leftWheels = new Talon(PWM_1);
@@ -30,7 +30,7 @@ public interface Hardware extends Maps {
 	public static final class Pickup {
 		public static final Solenoid arms = new Solenoid(SOLENOID_1);
 		public static final Talon spinWheels = new Talon(PWM_3);
-        public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
+       //  public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
 	}
 	
 	public static final class Catapult {
@@ -46,10 +46,10 @@ public interface Hardware extends Maps {
 	}
 	
 	public static final class LaserPoint {
-		public static final Servo servo = new Servo(PWM_4);
+      //  public static final Servo servo = new Servo(PWM_4);
 	}
 	
 	public static final class Sonar {
-		public static final MaxBotixSonar sonar = new MaxBotixSonar(ANALOG_1);
+		// public static final MaxBotixSonar sonar = new MaxBotixSonar(ANALOG_1);
 	}
 }
