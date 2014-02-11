@@ -3,6 +3,7 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.GLOBAL;
 import com.shsrobotics.library.JoystickButton;
 import com.shsrobotics.library.joysticks.Extreme3DController;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -17,13 +18,13 @@ public interface Maps extends GLOBAL {
 	public static final Joystick driveStick = new Joystick(USB_1);
 	public static final Joystick switchStick = new Joystick(USB_2);
 
-	public static final int LAUNCH_POWER_HIGH = 1;
-    public static final int LAUNCH_POWER_LOW = 2;
+	public static final boolean HIGH_POWER = true;
+    public static final boolean LOW_POWER = false;
     
-    public static final int LOAD_FORWARD = 3;
-    public static final int LOAD_BACKWARD = 4;
+    public static final boolean LOAD_FORWARD = true;
+    public static final boolean LOAD_BACKWARD = false;
     
-    public static final Timer timer = new Timer();
+    public static final Timer DRIVE_TIMER = new Timer();
 	
 	public static final class Camera {	
 		public static final AxisCamera.ResolutionT	imageResolution = AxisCamera.ResolutionT.k160x120; 
@@ -42,7 +43,8 @@ public interface Maps extends GLOBAL {
         
 		public static final JoystickButton setLaserPointer = new JoystickButton(driveStick, Extreme3DController.baseRearLeft);
         
-        public static final JoystickButton reverse = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
+        public static final JoystickButton flip = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
+        public static final JoystickButton latch = new JoystickButton(driveStick, Extreme3DController.baseCenterLeft);
         
 	}
 	
@@ -53,13 +55,16 @@ public interface Maps extends GLOBAL {
     }
 	
 	public static final class Drive {
-			public static final double DRIVE_SCALE = 0.2;
+			public static final double DRIVE_SCALE = 0.7;
+            public static final DoubleSolenoid.Value HIGH_GEAR = RETRACTED;
+            public static final DoubleSolenoid.Value LOW_GEAR = EXTENDED;
+            public static boolean doneDriving = false;
 	}
     
     public static final class SmartDashboardKeys {
-        public static final String KEY_LOADED = "loaded";
-        public static final String KEY_INRANGE = "inRange";
-        public static final String KEY_ARM_STATE = "armPosition";
+        public static final String KEY_LOADED = "Loaded";
+        public static final String KEY_INRANGE = "In Range";
+        public static final String KEY_ARM_STATE = "Arm Position";
 
     }
     
@@ -95,8 +100,8 @@ public interface Maps extends GLOBAL {
 		}
 		
 		public static final class CatapultPower {
-			public static final int HIGH = 0;
-			public static final int LOW = 1;
+			public static final boolean HIGH = true;
+			public static final boolean LOW = false;
 		}
         
 	}

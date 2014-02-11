@@ -2,8 +2,6 @@ package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.FRCRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * @author Team 2412
  */
@@ -11,72 +9,69 @@ public class Main extends FRCRobot implements Hardware {
 	
     public void robotInit() { }
     
-	public void disabledInit() { }
+	public void disabledInit() {
+        Timer.delay(5);
+    }
 	
 	public void disabledPeriodic() {
+        VisionTracking.getInitialImage();
 		System.out.println(Sonar.sonar.getDistanceInFeet());
         Timer.delay(1);
 	}
 	
     public void autonomousInit() {
         compressor.start();
-        // (before 5 seconds)
-        // Get correct side; shoot immediately ?
-        // Move to proper location
-        // Shoot
-        if(VisionTracking.correctSide()) {
-            new LaunchCatapult(LAUNCH_POWER_HIGH);
+        
+        VisionTracking.run();
+        DriveRobot.driveForTime(3.0);
+        if (VisionTracking.correctSide) {
+            new LaunchCatapult(HIGH_POWER);
+        } else {
+            Timer.delay(2.0);
+            new LaunchCatapult(HIGH_POWER);
         }
     }
     
     
     public void teleopInit() {
         compressor.start();
-		Catapult.launch.set(RETRACTED);
+        Catapult.setLauncher(RETRACTED);
+        DriveBase.shifter.set(Drive.HIGH_GEAR);
+        LaserPointer.set();
     }
 	
     public void teleopPeriodic() {
-
-        // loaded
-        SmartDashboard.putBoolean(SmartDashboardKeys.KEY_LOADED, Pickup.loaded.get());
-        SmartDashboard.putNumber("Speed", 0.0);
-        
         // arms
-		// Pickup.arms.set(Buttons.armsForward.held() ? EXTENDED : RETRACTED); // solenoid 1 (extended) & 2 (retracted)
+		Pickup.arms.set(Buttons.armsForward.held()); // solenoid 1 (extended) & 2 (retracted)
         
         // spin wheels
-        /* if (Buttons.pickup.held()) {
-            LoadBall.load(Pickup.arms.get() == EXTENDED);
+        if (Buttons.pickup.held()) {
+            LoadBall.load(Pickup.arms.get());
         } else {
             LoadBall.stopLoading();
-        } */
-        
-        if (Buttons.pickup.held()) {
-            testWheels.set(SmartDashboard.getNumber("Speed"));
-        } else {
-            testWheels.set(0.0);
-        }
+        } 
         
         // gear shifting
         if (Buttons.shift.pressed()) {
-            if (DriveBase.shifter.get().equals(RETRACTED)) {
-                DriveBase.shifter.set(EXTENDED);
-            }
-            else {
-                DriveBase.shifter.set(RETRACTED);
-            }
+            DriveBase.shifter.set(
+                DriveBase.shifter.get().equals(Drive.HIGH_GEAR) ? Drive.LOW_GEAR : Drive.HIGH_GEAR);
         }
         
         // drive
-		DriveBase.drive.arcadeDrive(driveStick);
-		
-        // laser angle
-		if(Buttons.setLaserPointer.pressed()) {
-			LaserPointer.set();
-		}
+		DriveRobot.drive();
 		
         // shoot
-		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(LAUNCH_POWER_HIGH));
-		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(LAUNCH_POWER_LOW));
+		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(HIGH_POWER));
+		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(LOW_POWER));
+        
+        // manual latch
+        if(Buttons.latch.pressed()) {
+            Catapult.latch.set(!Catapult.latch.get());
+        }
+        
+        // flip the robot's direction
+        if(Buttons.flip.pressed()) {
+            DriveRobot.reverseDirection();
+        }
     }
 }

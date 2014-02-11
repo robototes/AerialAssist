@@ -1,13 +1,12 @@
 package com.shsrobotics.AerialAssist;
 
 import com.sun.squawk.util.MathUtils;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
  * @author RoboTotes Team 2412
  */
-public class Drive implements Hardware {
+public class DriveRobot implements Hardware {
 	public static IIR xIIR = new IIR();
 	public static IIR yIIR = new IIR();
     public static boolean driveDirection = true; // true positive, false negative
@@ -34,10 +33,10 @@ public class Drive implements Hardware {
 		}
 	}
     public static void driveForTime(double seconds) {
-        timer.reset();
-        timer.start();
+        DRIVE_TIMER.reset();
+        DRIVE_TIMER.start();
         
-        while (timer.get() < seconds) {
+        while (DRIVE_TIMER.get() < seconds) {
             drive();
         }
     }
