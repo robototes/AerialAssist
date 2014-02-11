@@ -17,9 +17,6 @@ public interface Maps extends GLOBAL {
  
 	public static final Joystick driveStick = new Joystick(USB_1);
 	public static final Joystick switchStick = new Joystick(USB_2);
-
-	public static final boolean HIGH_POWER = true;
-    public static final boolean LOW_POWER = false;
     
     public static final boolean LOAD_FORWARD = true;
     public static final boolean LOAD_BACKWARD = false;
@@ -98,11 +95,10 @@ public interface Maps extends GLOBAL {
 				this.value = value;
 			}
 		}
-		
-		public static final class CatapultPower {
-			public static final boolean HIGH = true;
-			public static final boolean LOW = false;
-		}
-        
 	}
+    
+    public static final class CatapultPower {
+		public static final boolean HIGH = true;
+		public static final boolean LOW = false;
+    }
 }

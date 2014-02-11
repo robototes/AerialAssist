@@ -10,26 +10,26 @@ public class Main extends FRCRobot implements Hardware {
     public void robotInit() { }
     
 	public void disabledInit() {
+        //VisionTracking.initializer();
         Timer.delay(5);
     }
 	
 	public void disabledPeriodic() {
-        VisionTracking.getInitialImage();
-		System.out.println(Sonar.sonar.getDistanceInFeet());
+        //VisionTracking.getInitialImage();
         Timer.delay(1);
 	}
 	
     public void autonomousInit() {
         compressor.start();
-        
+        /*
         VisionTracking.run();
         DriveRobot.driveForTime(3.0);
         if (VisionTracking.correctSide) {
-            new LaunchCatapult(HIGH_POWER);
+            new LaunchCatapult(CatapultPower.HIGH);
         } else {
             Timer.delay(2.0);
-            new LaunchCatapult(HIGH_POWER);
-        }
+            new LaunchCatapult(CatapultPower.HIGH);
+        }*/
     }
     
     
@@ -61,15 +61,15 @@ public class Main extends FRCRobot implements Hardware {
 		DriveRobot.drive();
 		
         // shoot
-		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(HIGH_POWER));
-		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(LOW_POWER));
+		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
+		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));
         
         // manual latch
         if(Buttons.latch.pressed()) {
             Catapult.latch.set(!Catapult.latch.get());
         }
         
-        // flip the robot's direction
+        // reverse the robot's direction
         if(Buttons.flip.pressed()) {
             DriveRobot.reverseDirection();
         }

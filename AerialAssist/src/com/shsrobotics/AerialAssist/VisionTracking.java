@@ -5,6 +5,7 @@ import com.sun.cldc.jna.Pointer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.LinearAverages;
 import edu.wpi.first.wpilibj.image.NIVision;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * Has all the vision tracking routines.
@@ -14,7 +15,7 @@ public class VisionTracking implements Hardware {
 
 	public static final boolean	HOT_GOAL_LEFT = false;
 	public static final boolean HOT_GOAL_RIGHT = true;
-    public static boolean correctSide;
+    public static boolean correctSide = false;
 	
     public static final int LEFT_LINE = (int) (Camera.imageResolution.width * 0.25);
     public static final int RIGHT_LINE = (int) (Camera.imageResolution.width * 0.75); 
@@ -30,6 +31,13 @@ public class VisionTracking implements Hardware {
     public static void run() {
         detectSide();
         setCorrectSide();
+    }
+    
+    public static void initializer() {
+        camera.writeResolution(Camera.imageResolution);
+ 		
+ 		NetworkTable configuration = NetworkTable.getTable("configuration");
+ 		Field.robotPosition = (Field.Position) configuration.getValue("Initial Position", Field.Position.right); // default is right
     }
     
 	private static void detectSide() {
@@ -65,7 +73,7 @@ public class VisionTracking implements Hardware {
         
 	}	
     
-    public static void setCorrectSide() {
+    private static void setCorrectSide() {
         if (!Goal.left.isHot && Field.robotPosition == Position.left ||
 			!Goal.right.isHot && Field.robotPosition == Position.right) { // incorrect side
 				correctSide = false;
