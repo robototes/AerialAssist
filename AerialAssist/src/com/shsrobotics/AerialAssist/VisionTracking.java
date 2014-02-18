@@ -5,12 +5,12 @@ import com.sun.cldc.jna.Pointer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.LinearAverages;
 import edu.wpi.first.wpilibj.image.NIVision;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * Has all the vision tracking routines.
  * @author RoboTotes Team 2412
  */
+
 public class VisionTracking implements Hardware {
 
 	public static final boolean	HOT_GOAL_LEFT = false;
@@ -22,7 +22,10 @@ public class VisionTracking implements Hardware {
     
     public static void getInitialImage() {
         try {
-           // Images.start = camera.getImage(); 
+            if ( Images.start != null ) {
+                Images.start.free();
+            }
+            Images.start = camera.getImage(); 
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -34,10 +37,7 @@ public class VisionTracking implements Hardware {
     }
     
     public static void initializer() {
-        // camera.writeResolution(Camera.imageResolution);
- 		
- 		NetworkTable configuration = NetworkTable.getTable("configuration");
- 		Field.robotPosition = (Field.Position) configuration.getValue("Initial Position", Field.Position.right); // default is right
+         camera.writeResolution(Camera.imageResolution);
     }
     
 	private static void detectSide() {
@@ -48,7 +48,7 @@ public class VisionTracking implements Hardware {
 			Pointer subtracted = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
 			Pointer grayscale = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageU8, 0);
 			Timer.delay(3); // three second delay
-            // Images.after = camera.getImage();
+             Images.after = camera.getImage();
 			NIVision.subtract(subtracted, Images.after.image, Images.start.image); // subtract two images
 			NIVision.extractColorPlanes(
                 subtracted, NIVision.ColorMode.IMAQ_HSL, null, null, grayscale); // convert to grayscale
@@ -63,8 +63,9 @@ public class VisionTracking implements Hardware {
 			
 			Images.start.free();
 			Images.after.free();
-			subtracted.release();
-			grayscale.release();
+            //Images.subtract.free();
+            subtracted.release();
+            grayscale.release();
         }
         
         catch (Exception e) {

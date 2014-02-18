@@ -3,7 +3,6 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.GLOBAL;
 import com.shsrobotics.library.JoystickButton;
 import com.shsrobotics.library.joysticks.Extreme3DController;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -15,36 +14,47 @@ import edu.wpi.first.wpilibj.image.NIVision;
  */
 public interface Maps extends GLOBAL {
  
-	public static final Joystick driveStick = new Joystick(USB_1);
-	public static final Joystick switchStick = new Joystick(USB_2);
+	public static final IIR driverStick = new IIR(20, USB_1);
+	public static final Joystick coDriverStick = new Joystick(USB_2);
     
-    public static final boolean LOAD_FORWARD = true;
-    public static final boolean LOAD_BACKWARD = false;
+    public static final boolean LOAD_UP = false;
+    public static final boolean LOAD_BACKWARD = true;
+    
+    public static final int TWENTY_FOUR = 1;
+    public static final int TWELVE = 2;
+    
+    public static final boolean LOCKED = true;
+    public static final boolean UNLOCKED = false;
+    
+    public static double PID_P = .05;
+    public static double PID_I = .025;
+    public static double PID_D = .0166666;
     
     public static final Timer DRIVE_TIMER = new Timer();
 	
 	public static final class Camera {	
-		public static final AxisCamera.ResolutionT	imageResolution = AxisCamera.ResolutionT.k160x120; 
+		public static final AxisCamera.ResolutionT imageResolution = AxisCamera.ResolutionT.k160x120; 
 		public static final NIVision.Rect fullImage = new NIVision.Rect(0, 0, imageResolution.height, imageResolution.width);
 	}
 	
 	public static final class Buttons {
-		public static final JoystickButton launchCatapultLow = new JoystickButton(driveStick, Extreme3DController.topTopLeft);
-        public static final JoystickButton launchCatapultHigh = new JoystickButton(driveStick, Extreme3DController.topTopRight);
+        public static final JoystickButton dumper = new JoystickButton(coDriverStick, 6);
+        public static final JoystickButton manualDump = new JoystickButton(coDriverStick, 8);
+        public static final JoystickButton armsUp = new JoystickButton(coDriverStick, 11);
+		public static final JoystickButton roller = new JoystickButton(coDriverStick, 10);
+        public static final JoystickButton reverseLoadDirection = new JoystickButton(coDriverStick, 9);
+		public static final JoystickButton shiftOverride = new JoystickButton(coDriverStick, 12);
         
-        public static final JoystickButton armsForward = new JoystickButton(driveStick, Extreme3DController.topBottomLeft);
-		public static final JoystickButton pickup = new JoystickButton(driveStick, Extreme3DController.baseCenterRight);
-		
-        public static final JoystickButton driveScale = new JoystickButton(driveStick, Extreme3DController.side);
-        public static final JoystickButton shift = new JoystickButton(driveStick, Extreme3DController.baseRearRight);
+        public static final JoystickButton driveScale = new JoystickButton(driverStick, Extreme3DController.side);
+        public static final JoystickButton shift = new JoystickButton(driverStick, Extreme3DController.trigger);
+        public static final JoystickButton flip = new JoystickButton(driverStick, Extreme3DController.topTopLeft);
+
+//        public static final JoystickButton latch = new JoystickButton(driverStick, Extreme3DController.baseCenterLeft);
         
-		public static final JoystickButton setLaserPointer = new JoystickButton(driveStick, Extreme3DController.baseRearLeft);
         
-        public static final JoystickButton flip = new JoystickButton(driveStick, Extreme3DController.topBottomRight);
-        public static final JoystickButton latch = new JoystickButton(driveStick, Extreme3DController.baseCenterLeft);
-        
-	}
-	
+    }
+    
+    
     public static final class Images {
         public static Image start;
         public static Image after;
@@ -53,14 +63,14 @@ public interface Maps extends GLOBAL {
 	
 	public static final class Drive {
 			public static final double DRIVE_SCALE = 0.7;
-            public static final DoubleSolenoid.Value HIGH_GEAR = RETRACTED;
-            public static final DoubleSolenoid.Value LOW_GEAR = EXTENDED;
+            public static final boolean HIGH_GEAR = false;
+            public static final boolean LOW_GEAR = true;
             public static boolean doneDriving = false;
 	}
     
     public static final class SmartDashboardKeys {
-        public static final String KEY_LOADED = "Loaded";
-        public static final String KEY_INRANGE = "In Range";
+//        public static final String KEY_LOADED = "Loaded";
+//        public static final String KEY_INRANGE = "In Range";
         public static final String KEY_ARM_STATE = "Arm Position";
 
     }
@@ -95,10 +105,20 @@ public interface Maps extends GLOBAL {
 				this.value = value;
 			}
 		}
+        
+        public static final class RobotPosition {
+            public RobotPosition(Field.Position pos) {
+                Field.robotPosition = pos;
+            }
+        }
 	}
-    
+    /*
     public static final class CatapultPower {
 		public static final boolean HIGH = true;
 		public static final boolean LOW = false;
+    }*/
+    
+    public static final class LoadingValues {
+        public static final double SPEED = 1.0;
     }
 }

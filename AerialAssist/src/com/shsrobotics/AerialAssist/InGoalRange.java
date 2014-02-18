@@ -6,7 +6,7 @@ public class InGoalRange implements Hardware {
     
     
     public static boolean inGoalRange() {
-     //  return Sonar.sonar.getDistance() <= IN_RANGE + ERROR && Sonar.sonar.getDistance() >= IN_RANGE - ERROR;
+     // return Sonar.sonar.getDistance() <= IN_RANGE + ERROR && Sonar.sonar.getDistance() >= IN_RANGE - ERROR;
         return false;
     }
 }
