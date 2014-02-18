@@ -73,10 +73,6 @@ public class DriveRobot implements Hardware {
         }
     }
 	
-    public static void reverseDirection() {
-        driveDirection = !driveDirection;
-    }
-    
 	private static double joystickCutoff(double x) {
         if(Math.abs(x) < 0.05) {
             return 0;

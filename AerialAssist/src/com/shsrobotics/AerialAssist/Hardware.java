@@ -31,17 +31,17 @@ public interface Hardware extends Maps {
 //        public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
 	}
 	
-	public static final class Dumper {
-		public static final DoubleSolenoid launch = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_8, SOLENOID_7);
-//		public static final DoubleSolenoid launchRight = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_3, SOLENOID_4);
-//        public static final Solenoid latch = new Solenoid(TWELVE, SOLENOID_2);
-        /*public static void setLauncher(DoubleSolenoid.Value value) {
+	public static final class Catapult {
+        public static final DoubleSolenoid launchLeft = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_5, SOLENOID_6);
+		public static final DoubleSolenoid launchRight = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_3, SOLENOID_4);
+        public static final Solenoid latch = new Solenoid(TWELVE, SOLENOID_2);
+        public static void setLauncher(DoubleSolenoid.Value value) {
             launchLeft.set(value);
             launchRight.set(value);
         }
         public static DoubleSolenoid.Value getLauncher() {
             return launchLeft.get();
-        }*/
+        }
 	}
 	
 	public static final class LaserPoint {

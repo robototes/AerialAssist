@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 /*
  * @author RoboTotes Team 2412
  */
-public class Dump extends Task implements Hardware {
+/*public class Dump extends Task implements Hardware {
 	protected void initialize() {
         Pickup.arms.set(LOAD_BACKWARD);
         Dumper.launch.set(EXTENDED);
@@ -23,4 +23,4 @@ public class Dump extends Task implements Hardware {
 		Dumper.launch.set(RETRACTED);
 	}
 
-}
+}*/

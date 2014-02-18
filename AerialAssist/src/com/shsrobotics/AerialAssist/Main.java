@@ -12,7 +12,6 @@ public class Main extends FRCRobot implements Hardware {
     double speed;  // roller speed
 
     public void robotInit() {
-        camera.writeResolution(Camera.imageResolution); 
         autonomousPosition.addDefault("Left", Field.Position.left);
         autonomousPosition.addObject("Right", Field.Position.right);
         
@@ -20,7 +19,7 @@ public class Main extends FRCRobot implements Hardware {
         screen.println(Screen.line3, Screen.tab4, "2014");
         
         SmartDashboard.putData("autonomousPosition", autonomousPosition);
-        SmartDashboard.putNumber("Sonar stopping distance", 47.0);
+        SmartDashboard.putNumber("Sonar stopping distance", 60.0);
         Timer.delay(7);
     }
     
@@ -31,79 +30,85 @@ public class Main extends FRCRobot implements Hardware {
 	
 	public void disabledPeriodic() {
         VisionTracking.getInitialImage();
-        System.out.println(Sonar.sonar.getDistance());
         Timer.delay(1);
 	}
 	
     public void autonomousInit() {
+        
         System.out.println("Autonomous Started");
+        
         if(autonomousPosition.getSelected() == Field.Position.left) {
             Field.robotPosition = Field.Position.left;
         } else {
             Field.robotPosition = Field.Position.right;
-        } 
+        }
         compressor.start();
-
+        
         Pickup.arms.set(LOAD_BACKWARD);
-
+        
         System.out.println("Starting vision tracking");
         VisionTracking.run();
-        System.out.println("Vision tracking done");
+        System.out.println("vision tracking done");
         DriveRobot.driveUntilSonarSaysStopPID(SmartDashboard.getNumber("Sonar stopping distance"));
         System.out.println("Robot done driving");
         if (VisionTracking.correctSide) {
             System.out.println("Robot is on correct side");
-            new Dump();
+            new LaunchCatapult(CatapultPower.HIGH);
         } else {
             System.out.println("Robot isn't on correct side");
             Timer.delay(2.0);
-            new Dump();
+            new LaunchCatapult(CatapultPower.HIGH);
         }
     }
     
     public void autonomousPeriodic() {
-        if (!SonarDriveTask.inProgress) {
+        if (!LaunchCatapult.inProgress && !SonarDriveTask.inProgress) {
             DriveRobot.basicArcade(0.0, 0.0);
         }
     }
     
-    
     public void teleopInit() {
         compressor.start();
-        Dumper.launch.set(RETRACTED);
+        Catapult.setLauncher(RETRACTED);
 //        Pickup.arms.set(LOAD_BACKWARD);
         DriveBase.shifter.set(Drive.HIGH_GEAR);
+//        LaserPointer.set();
     }
 	
     public void teleopPeriodic() {
         // Smart Dashboard 
-        SmartDashboard.putBoolean("Launcher", Dumper.launch.get() == EXTENDED);
+//        SmartDashboard.putBoolean("Loaded", Pickup.loaded.get());
+        SmartDashboard.putBoolean("In Range", InGoalRange.inGoalRange());
+        SmartDashboard.putBoolean("Launcher", Catapult.getLauncher().equals(EXTENDED));
         SmartDashboard.putBoolean("Arms", Pickup.arms.get());
+        SmartDashboard.putBoolean("Latch", Catapult.latch.get());
         SmartDashboard.putBoolean("Compressor", compressor.getPressureSwitchValue());
-        SmartDashboard.putNumber("Sonar Distance (ft)", Sonar.sonar.getDistanceInFeet());
         
         // drive
 		DriveRobot.advancedArcade();
-        if(Buttons.flip.pressed()) {
-            DriveRobot.reverseDirection();
-        }
-        DriveRobot.driveDirection = !Buttons.flip.held();
         
         // gear shifting
         DriveBase.shifter.set((Buttons.shiftOverride.get() || Buttons.shift.held()) ?
             Drive.LOW_GEAR : Drive.HIGH_GEAR);
         
+        DriveRobot.driveDirection = !Buttons.flip.held();
+        
         // arms
 		Pickup.arms.set(Buttons.armsUp.get() ? LOAD_UP : LOAD_BACKWARD);
         
         // spin wheels
-        Pickup.roller.set(Buttons.roller.held() ? 0.5 : 
-            Buttons.reverseLoadDirection.held() ? -0.5 : 0);
+        speed = 0.5 + coDriverStick.getZ() * ROLLER_DIAL;
+        Pickup.roller.set(Buttons.roller.held() ? speed: 
+            Buttons.reverseLoadDirection.held() ? -speed : 0);
         
-        // dump
-		Buttons.dumper.whenPressed(new Dump());
+        // shoot
+		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
+		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));
         
-        // sets dumper arms
-//        Dumper.launch.set(Buttons.manualDump.held() ? EXTENDED : RETRACTED);
+        // manual latch
+        if(Buttons.latch.pressed()) {
+            Catapult.latch.set(!Catapult.latch.get());
+        }
+        
     }
 }

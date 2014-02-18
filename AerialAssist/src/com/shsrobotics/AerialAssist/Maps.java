@@ -30,6 +30,8 @@ public interface Maps extends GLOBAL {
     public static double PID_I = .025;
     public static double PID_D = .0166666;
     
+    public static final double ROLLER_DIAL = 0.1;
+    
     public static final Timer DRIVE_TIMER = new Timer();
 	
 	public static final class Camera {	
@@ -48,8 +50,10 @@ public interface Maps extends GLOBAL {
         public static final JoystickButton driveScale = new JoystickButton(driverStick, Extreme3DController.side);
         public static final JoystickButton shift = new JoystickButton(driverStick, Extreme3DController.trigger);
         public static final JoystickButton flip = new JoystickButton(driverStick, Extreme3DController.topTopLeft);
-
-//        public static final JoystickButton latch = new JoystickButton(driverStick, Extreme3DController.baseCenterLeft);
+        
+        public static final JoystickButton launchCatapultHigh = new JoystickButton(coDriverStick, 5);
+        public static final JoystickButton launchCatapultLow = new JoystickButton(coDriverStick, 4);
+        public static final JoystickButton latch = new JoystickButton(coDriverStick, 7);
         
         
     }
@@ -112,11 +116,11 @@ public interface Maps extends GLOBAL {
             }
         }
 	}
-    /*
+    
     public static final class CatapultPower {
 		public static final boolean HIGH = true;
 		public static final boolean LOW = false;
-    }*/
+    }
     
     public static final class LoadingValues {
         public static final double SPEED = 1.0;
