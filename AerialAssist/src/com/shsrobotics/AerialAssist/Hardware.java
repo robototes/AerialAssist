@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.camera.AxisCamera;
  * @author Team 2412
  */
 public interface Hardware extends Maps {
-    public static final Compressor compressor = new Compressor(DIGITAL_IO_1, RELAY_1);
+    public static final Compressor compressor = new Compressor(DIGITAL_IO_14, RELAY_7);
     public static final AxisCamera camera = AxisCamera.getInstance("10.24.12.11"); 
  
 	public static final class DriveBase {
@@ -32,9 +32,9 @@ public interface Hardware extends Maps {
 	}
 	
 	public static final class Catapult {
-        public static final DoubleSolenoid launchLeft = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_5, SOLENOID_6);
-		public static final DoubleSolenoid launchRight = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_3, SOLENOID_4);
-        public static final Solenoid latch = new Solenoid(TWELVE, SOLENOID_2);
+        public static final DoubleSolenoid launchLeft = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_8, SOLENOID_7);
+		public static final DoubleSolenoid launchRight = new DoubleSolenoid(TWENTY_FOUR, SOLENOID_4, SOLENOID_3);
+        public static final Solenoid latch = new Solenoid(TWELVE, SOLENOID_6);
         public static void setLauncher(DoubleSolenoid.Value value) {
             launchLeft.set(value);
             launchRight.set(value);

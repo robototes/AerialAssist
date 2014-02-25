@@ -47,9 +47,9 @@ public class DriveRobot implements Hardware {
 		z = MathUtils.pow(z, 5) * 0.9 * scale;
 		
         if (driveDirection) {
-            basicArcade(joystickCutoff(y), joystickCutoff(z));
-        } else {
             basicArcade(joystickCutoff(-y), joystickCutoff(z));
+        } else {
+            basicArcade(joystickCutoff(y), joystickCutoff(z));
         }
 	}
     

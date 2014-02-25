@@ -1,12 +1,11 @@
 package com.shsrobotics.AerialAssist;
 
 public class InGoalRange implements Hardware {
-    public static final double IN_RANGE = 6.7; // feet
-    public static final double ERROR = 0.2;  // still feet
+    public static final double MIN_RANGE = 70; // in
+    public static final double MAX_RANGE = 105; // in
     
     
     public static boolean inGoalRange() {
-     // return Sonar.sonar.getDistance() <= IN_RANGE + ERROR && Sonar.sonar.getDistance() >= IN_RANGE - ERROR;
-        return false;
+        return Sonar.sonar.getDistance() < MAX_RANGE && Sonar.sonar.getDistance() > MIN_RANGE;
     }
 }

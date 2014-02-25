@@ -31,6 +31,7 @@ public interface Maps extends GLOBAL {
     public static double PID_D = .0166666;
     
     public static final double ROLLER_DIAL = 0.1;
+    public static final double SKID_DISTANCE = 0.0; // inches, test this
     
     public static final Timer DRIVE_TIMER = new Timer();
 	
