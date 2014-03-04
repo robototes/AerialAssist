@@ -2,6 +2,7 @@ package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.MaxBotixSonar;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -28,7 +29,7 @@ public interface Hardware extends Maps {
 	public static final class Pickup {
 		public static final Solenoid arms = new Solenoid(TWELVE, SOLENOID_8);
 		public static final Talon roller = new Talon(PWM_3);
-//        public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
+        public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
 	}
 	
 	public static final class Catapult {

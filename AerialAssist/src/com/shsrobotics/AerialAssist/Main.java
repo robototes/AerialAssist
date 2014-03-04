@@ -1,15 +1,7 @@
 /*
--switched drive flipping to be on throttle (it is the way Evan wants it, don't change
--switched high gear/low gear in hardware, figure out if it also needs to be changed in 
-code
--added in 67 inches for autonomous sonar distance
--EVERY SINGLE VARIABLE THAT I /MIGHT/ LIKE TO CHANGE SHOULD BE ON SMART DASHBOARD - Drive
--Switch that switches between current shooting mode and the mode that:
-	Makes the pistons always charged and pressing the shoot button just releases the 
-latch, so for most of the match the pistons are fully charged
--fix bringing pickup arm down when shooting
--high power put latch in at the beginning
--in range
+-switched high gear/low gear in hardware, figure out if it also needs to be changed in code
+-EVERY SINGLE VARIABLE THAT I /MIGHT/ LIKE TO CHANGE SHOULD BE ON SMART DASHBOARD - Drive team
+-fix bringing pickup arm down when shooting - need to test
 -sync to github
 */
 package com.shsrobotics.AerialAssist;
@@ -24,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Main extends FRCRobot implements Hardware {
     SendableChooser autonomousPosition = new SendableChooser();
     double speed;  // roller speed
-    double actualSpeed;
 
     public void robotInit() {
         autonomousPosition.addDefault("Left", Field.Position.left);
@@ -34,7 +25,6 @@ public class Main extends FRCRobot implements Hardware {
         screen.println(Screen.line3, Screen.tab4, "2014");
         
         SmartDashboard.putData("autonomousPosition", autonomousPosition);
-        SmartDashboard.putNumber("Sonar stopping distance", 60.0);
         Timer.delay(7);
     }
     
@@ -57,7 +47,7 @@ public class Main extends FRCRobot implements Hardware {
         }
         compressor.start();
         
-        Pickup.arms.set(LOAD_BACKWARD);
+        Pickup.arms.set(ARMS_OUT);
         
         System.out.println("Starting vision tracking");
         VisionTracking.run();
@@ -66,11 +56,13 @@ public class Main extends FRCRobot implements Hardware {
         System.out.println("Robot done driving");
         if (VisionTracking.correctSide) {
             System.out.println("Robot is on correct side");
-            new LaunchCatapult(CatapultPower.HIGH);
+            new LaunchCatapult(CatapultPower.HIGH).start();
+            System.out.println("Robot has shot high");
         } else {
             System.out.println("Robot isn't on correct side");
-            Timer.delay(2.0);
-            new LaunchCatapult(CatapultPower.HIGH);
+            Timer.delay(4.0);
+            new LaunchCatapult(CatapultPower.HIGH).start();
+            System.out.println("Robot has shot high");
         }
     }
     
@@ -88,13 +80,14 @@ public class Main extends FRCRobot implements Hardware {
 	
     public void teleopPeriodic() {
         // Smart Dashboard 
-//        SmartDashboard.putBoolean("Loaded", Pickup.loaded.get());
+        SmartDashboard.putBoolean("Loaded", Pickup.loaded.get());
         SmartDashboard.putBoolean("In Range", InGoalRange.inGoalRange());
         SmartDashboard.putBoolean("Launcher", Catapult.getLauncher().equals(EXTENDED));
         SmartDashboard.putBoolean("Arms", Pickup.arms.get());
         SmartDashboard.putBoolean("Latch", Catapult.latch.get());
         SmartDashboard.putBoolean("Compressor", compressor.getPressureSwitchValue());
         SmartDashboard.putNumber("Roller Dial", coDriverStick.getZ() * ROLLER_DIAL);
+        SmartDashboard.putNumber("Sonar value (in)", Sonar.sonar.getDistance());
         
         // drive
 		DriveRobot.advancedArcade();
@@ -108,22 +101,33 @@ public class Main extends FRCRobot implements Hardware {
         DriveRobot.driveDirection = driverStick.getThrottle() > 0;
         
         // arms
-		Pickup.arms.set(Buttons.armsUp.get() ? LOAD_UP : LOAD_BACKWARD);
+		Pickup.arms.set(Buttons.armsUp.get() ? ARMS_IN : ARMS_OUT);
         
         // spin wheels
-        speed = 0.5 + coDriverStick.getZ() * ROLLER_DIAL;
-        actualSpeed = SmartDashboard.getNumber("Roller Speed", 0.75);
-        Pickup.roller.set(Buttons.roller.held() ? actualSpeed: 
-            Buttons.reverseLoadDirection.held() ? -actualSpeed : 0.0);
+        speed = 0.75 + coDriverStick.getZ() * ROLLER_DIAL;
+        Loading.actualSpeed = SmartDashboard.getNumber("Roller Speed", 1.0);
+        Pickup.roller.set(Buttons.rollerForward.held() ? Loading.actualSpeed: 
+            Buttons.rollerReverse.held() ? -Loading.actualSpeed : 0.0);
         
         // shoot
-		Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
-		Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));
+        if (Buttons.alwaysCharged.held()) {
+            if (!LaunchAlwaysLoaded.inProgress) {
+                Catapult.setLauncher(EXTENDED);
+                Buttons.launchCatapultHigh.whenPressed(new LaunchAlwaysLoaded());
+                Buttons.launchCatapultLow.whenPressed(new LaunchAlwaysLoaded());
+            }
+        } else {
+            Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
+            Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));
+        }
         
         // manual latch
         if(Buttons.latch.pressed()) {
             Catapult.latch.set(!Catapult.latch.get());
         }
+        
+        // dump
+        Buttons.dump.whenPressed(new Dump());
         
     }
 }

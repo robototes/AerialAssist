@@ -59,7 +59,6 @@ public class DriveRobot implements Hardware {
     
     public static void driveUntilSonarSaysStop(double distanceInInches) {
         while (Sonar.sonar.getDistance() > distanceInInches) {
-            System.out.println();
             basicArcade(-0.5, 0);
         }
     }

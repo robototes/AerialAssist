@@ -6,21 +6,26 @@ import edu.wpi.first.wpilibj.Timer;
 /*
  * @author RoboTotes Team 2412
  */
-/*public class Dump extends Task implements Hardware {
+public class Dump extends Task implements Hardware {
 	protected void initialize() {
-        Pickup.arms.set(LOAD_BACKWARD);
-        Dumper.launch.set(EXTENDED);
-        Timer.delay(.5);
+   
 	}
 
-	protected void execute() { }
+	protected void execute() {
+        Catapult.latch.set(UNLOCKED);
+        Pickup.arms.set(ARMS_OUT);
+        Catapult.launchLeft.set(EXTENDED);
+        Timer.delay(.5);
+    }
 
 	protected boolean isFinished() {
 		return true;
 	}
 
 	protected void end() {
-		Dumper.launch.set(RETRACTED);
+        Catapult.launchLeft.set(RETRACTED);
+        Timer.delay(3.0);
+        Catapult.latch.set(LOCKED);
 	}
 
-}*/
+}

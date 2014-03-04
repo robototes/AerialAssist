@@ -22,7 +22,7 @@ public class VisionTracking implements Hardware {
     
     public static void getInitialImage() {
         try {
-            if ( Images.start != null ) {
+            if (Images.start != null) {
                 Images.start.free();
             }
             Images.start = camera.getImage(); 

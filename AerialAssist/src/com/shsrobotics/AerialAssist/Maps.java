@@ -17,14 +17,14 @@ public interface Maps extends GLOBAL {
 	public static final IIR driverStick = new IIR(20, USB_1);
 	public static final Joystick coDriverStick = new Joystick(USB_2);
     
-    public static final boolean LOAD_UP = false;
-    public static final boolean LOAD_BACKWARD = true;
+    public static final boolean ARMS_IN = false;
+    public static final boolean ARMS_OUT = true;
     
     public static final int TWENTY_FOUR = 1;
     public static final int TWELVE = 2;
     
-    public static final boolean LOCKED = true;
-    public static final boolean UNLOCKED = false;
+    public static final boolean UNLOCKED = true;
+    public static final boolean LOCKED = false;
     
     public static double PID_P = .05;
     public static double PID_I = .025;
@@ -41,11 +41,10 @@ public interface Maps extends GLOBAL {
 	}
 	
 	public static final class Buttons {
-        public static final JoystickButton dumper = new JoystickButton(coDriverStick, 6);
         public static final JoystickButton manualDump = new JoystickButton(coDriverStick, 8);
         public static final JoystickButton armsUp = new JoystickButton(coDriverStick, 11);
-		public static final JoystickButton roller = new JoystickButton(coDriverStick, 10);
-        public static final JoystickButton reverseLoadDirection = new JoystickButton(coDriverStick, 9);
+		public static final JoystickButton rollerForward = new JoystickButton(coDriverStick, 9);
+        public static final JoystickButton rollerReverse = new JoystickButton(coDriverStick, 10);
 		public static final JoystickButton shiftOverride = new JoystickButton(coDriverStick, 12);
         
         public static final JoystickButton driveScale = new JoystickButton(driverStick, Extreme3DController.side);
@@ -54,7 +53,9 @@ public interface Maps extends GLOBAL {
         
         public static final JoystickButton launchCatapultHigh = new JoystickButton(coDriverStick, 5);
         public static final JoystickButton launchCatapultLow = new JoystickButton(coDriverStick, 4);
+        public static final JoystickButton dump = new JoystickButton(coDriverStick, 3);
         public static final JoystickButton latch = new JoystickButton(coDriverStick, 7);
+        public static final JoystickButton alwaysCharged = new JoystickButton(coDriverStick, 6);
         
         
     }
@@ -123,7 +124,7 @@ public interface Maps extends GLOBAL {
 		public static final boolean LOW = false;
     }
     
-    public static final class LoadingValues {
-        public static final double SPEED = 1.0;
+    public static final class Loading {
+        public static double actualSpeed = 1.0;
     }
 }
