@@ -29,6 +29,7 @@ public class Main extends FRCRobot implements Hardware {
     }
     
 	public void disabledInit() {
+        Timer.delay(5.0);
         VisionTracking.initializer();
     }
 	
@@ -93,7 +94,7 @@ public class Main extends FRCRobot implements Hardware {
 		DriveRobot.advancedArcade();
         
         // gear shifting
-        DriveBase.shifter.set((Buttons.shiftOverride.get() || Buttons.shift.held()) ?
+        DriveBase.shifter.set((Buttons.shift.held()) ?
             Drive.HIGH_GEAR : Drive.LOW_GEAR);
         
         // drive flipping
@@ -104,30 +105,29 @@ public class Main extends FRCRobot implements Hardware {
 		Pickup.arms.set(Buttons.armsUp.get() ? ARMS_IN : ARMS_OUT);
         
         // spin wheels
-        speed = 0.75 + coDriverStick.getZ() * ROLLER_DIAL;
-        Loading.actualSpeed = SmartDashboard.getNumber("Roller Speed", 1.0);
-        Pickup.roller.set(Buttons.rollerForward.held() ? Loading.actualSpeed: 
-            Buttons.rollerReverse.held() ? -Loading.actualSpeed : 0.0);
+        Loading.actualSpeed = SmartDashboard.getNumber("Roller Speed", 0.75);
+        speed = Loading.actualSpeed + coDriverStick.getX() * ROLLER_DIAL;
+        //if (Buttons.)
+        Pickup.roller.set(Buttons.rollerIn.held() ? speed: 
+            Buttons.rollerOut.held() ? -speed : 0.0);
+        
         
         // shoot
-        if (Buttons.alwaysCharged.held()) {
+        if (Buttons.charge.held()) {
             if (!LaunchAlwaysLoaded.inProgress) {
                 Catapult.setLauncher(EXTENDED);
-                Buttons.launchCatapultHigh.whenPressed(new LaunchAlwaysLoaded());
-                Buttons.launchCatapultLow.whenPressed(new LaunchAlwaysLoaded());
+                Buttons.launchCatapult.whenPressed(new LaunchAlwaysLoaded());
             }
         } else {
-            Buttons.launchCatapultHigh.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
-            Buttons.launchCatapultLow.whenPressed(new LaunchCatapult(CatapultPower.LOW));
-        }
-        
-        // manual latch
-        if(Buttons.latch.pressed()) {
-            Catapult.latch.set(!Catapult.latch.get());
+            if (Buttons.latch.held()) {
+                Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
+            } else {
+                Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.LOW));
+            }
         }
         
         // dump
-        Buttons.dump.whenPressed(new Dump());
+        Buttons.dump.whenPressed(new Dump(Buttons.dumpMode.get() ? DumpMode.SINGLE : DumpMode.HALF));
         
     }
 }
