@@ -34,6 +34,7 @@ public interface Maps extends GLOBAL {
     public static final double SKID_DISTANCE = 0.0; // inches, test this
     
     public static final Timer DRIVE_TIMER = new Timer();
+    public static final Timer LATCH_TIMER = new Timer();
 	
 	public static final class Camera {	
 		public static final AxisCamera.ResolutionT imageResolution = AxisCamera.ResolutionT.k160x120; 
@@ -121,8 +122,8 @@ public interface Maps extends GLOBAL {
     }
     
     public static final class DumpMode {
-        public static final boolean SINGLE = true;
-        public static final boolean HALF = false;
+        public static final boolean PWM = true;
+        public static final boolean SINGLE = false;
     }
     
     public static final class Loading {

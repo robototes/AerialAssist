@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Main extends FRCRobot implements Hardware {
     SendableChooser autonomousPosition = new SendableChooser();
     double speed;  // roller speed
+    boolean inProgress;
 
     public void robotInit() {
         autonomousPosition.addDefault("Left", Field.Position.left);
@@ -80,7 +81,9 @@ public class Main extends FRCRobot implements Hardware {
     }
 	
     public void teleopPeriodic() {
-        // Smart Dashboard 
+        
+        inProgress = Dump.inProgress || LaunchAlwaysLoaded.inProgress || LaunchCatapult.inProgress;
+        // Smart Dashboard
         SmartDashboard.putBoolean("Loaded", Pickup.loaded.get());
         SmartDashboard.putBoolean("In Range", InGoalRange.inGoalRange());
         SmartDashboard.putBoolean("Launcher", Catapult.getLauncher().equals(EXTENDED));
@@ -101,33 +104,47 @@ public class Main extends FRCRobot implements Hardware {
         DriveRobot.driveDirection = !Buttons.flip.held();
         DriveRobot.driveDirection = driverStick.getThrottle() > 0;
         
-        // arms
-		Pickup.arms.set(Buttons.armsUp.get() ? ARMS_IN : ARMS_OUT);
+     
         
         // spin wheels
         Loading.actualSpeed = SmartDashboard.getNumber("Roller Speed", 0.75);
         speed = Loading.actualSpeed + coDriverStick.getX() * ROLLER_DIAL;
-        //if (Buttons.)
-        Pickup.roller.set(Buttons.rollerIn.held() ? speed: 
-            Buttons.rollerOut.held() ? -speed : 0.0);
-        
-        
-        // shoot
-        if (Buttons.charge.held()) {
-            if (!LaunchAlwaysLoaded.inProgress) {
-                Catapult.setLauncher(EXTENDED);
-                Buttons.launchCatapult.whenPressed(new LaunchAlwaysLoaded());
-            }
-        } else {
-            if (Buttons.latch.held()) {
-                Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
-            } else {
-                Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.LOW));
-            }
+        if (speed > 1.0) {
+            speed = 1.0;
+        }
+        if (speed < 0.0) {
+            speed = 0;
+        }
+        if (!Buttons.armsUp.held()) {
+            Pickup.roller.set(Buttons.rollerIn.held() ? speed: 
+                Buttons.rollerOut.held() ? -speed : 0.0);
         }
         
-        // dump
-        Buttons.dump.whenPressed(new Dump(Buttons.dumpMode.get() ? DumpMode.SINGLE : DumpMode.HALF));
         
+        // catapult
+        if (!inProgress) {
+            
+            // arms
+            Pickup.arms.set(!Buttons.armsUp.get());
+        
+            // dump
+            Buttons.dump.whenPressed(new Dump(Buttons.dumpMode.get() ?
+                DumpMode.PWM : DumpMode.SINGLE));
+            
+            // shoot
+            if (Buttons.charge.held()) {
+                new ChargeSequence().start();
+                Buttons.launchCatapult.whenPressed(new LaunchAlwaysLoaded());
+            } else {
+                Catapult.setLauncher(RETRACTED);
+                if (Buttons.latch.held()) {
+                    Catapult.latch.set(UNLOCKED);
+                    Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.LOW));
+                } else {
+                    Catapult.latch.set(LOCKED);
+                    Buttons.launchCatapult.whenPressed(new LaunchCatapult(CatapultPower.HIGH));
+                }
+            }
+        }
     }
 }

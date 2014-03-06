@@ -33,7 +33,10 @@ public class LaunchCatapult extends Task implements Hardware {
 	}
 
 	protected void initialize() {
-        Pickup.arms.set(ARMS_OUT);
+        if (Pickup.arms.get() == ARMS_IN) {
+            Pickup.arms.set(ARMS_OUT);
+            Timer.delay(3.0);
+        }
         System.out.println("In shooting method");
 		if (!inProgress) {
 			inProgress = true;
@@ -57,7 +60,6 @@ public class LaunchCatapult extends Task implements Hardware {
             if(Catapult.latch.get() == UNLOCKED) {
                 Timer.delay(0.5);
             }
-			inProgress = false;
 		}
 	}
 
@@ -69,10 +71,11 @@ public class LaunchCatapult extends Task implements Hardware {
 
 	protected void end() {
 		Catapult.setLauncher(RETRACTED);
-		Timer.delay(3.0);
+		Timer.delay(2.0);
         if(Catapult.latch.get() == UNLOCKED) {
             Catapult.latch.set(LOCKED); // set latch in
         }
+        inProgress = false;
 	}
 
 }
