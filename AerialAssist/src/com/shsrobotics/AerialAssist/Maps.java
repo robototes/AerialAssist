@@ -66,8 +66,8 @@ public interface Maps extends GLOBAL {
 	
 	public static final class Drive {
 			public static final double DRIVE_SCALE = 0.7;
-            public static final boolean HIGH_GEAR = false;
-            public static final boolean LOW_GEAR = true;
+            public static final boolean HIGH_GEAR = true;
+            public static final boolean LOW_GEAR = false;
             public static boolean doneDriving = false;
 	}
     
