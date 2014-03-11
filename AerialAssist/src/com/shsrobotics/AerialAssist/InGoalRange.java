@@ -1,7 +1,7 @@
 package com.shsrobotics.AerialAssist;
 
 public class InGoalRange implements Hardware {
-    public static final double MIN_RANGE = 70; // in
+    public static final double MIN_RANGE = 65; // in
     public static final double MAX_RANGE = 105; // in
     
     

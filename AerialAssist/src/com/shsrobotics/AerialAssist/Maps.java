@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.image.NIVision;
  */
 public interface Maps extends GLOBAL {
  
-	public static final IIR driverStick = new IIR(20, USB_1);
+	public static final IIR driverStick = new IIR(new IIR.Smoothing(50, 0, 25), USB_1);
 	public static final Joystick coDriverStick = new Joystick(USB_2);
     
     public static final boolean ARMS_IN = false;
@@ -31,7 +31,7 @@ public interface Maps extends GLOBAL {
     public static double PID_D = .0166666;
     
     public static final double ROLLER_DIAL = -0.25;
-    public static final double SKID_DISTANCE = 0.0; // inches, test this
+    public static final double SKID_DISTANCE = 5.0; // inches, test this
     
     public static final Timer DRIVE_TIMER = new Timer();
     public static final Timer LATCH_TIMER = new Timer();

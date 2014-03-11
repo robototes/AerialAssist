@@ -33,13 +33,12 @@ public class LaunchCatapult extends Task implements Hardware {
 	}
 
 	protected void initialize() {
-        if (Pickup.arms.get() == ARMS_IN) {
-            Pickup.arms.set(ARMS_OUT);
-            Timer.delay(3.0);
-        }
-        System.out.println("In shooting method");
 		if (!inProgress) {
-			inProgress = true;
+            inProgress = true;
+            if (Pickup.arms.get() == ARMS_IN) {
+                Pickup.arms.set(ARMS_OUT);
+                Timer.delay(3.0);
+            }
 			if (preCharged) { // high
                 if (Catapult.latch.get() == UNLOCKED) {
                     Catapult.latch.set(LOCKED);

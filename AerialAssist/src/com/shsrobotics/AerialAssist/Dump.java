@@ -47,7 +47,10 @@ public class Dump extends Task implements Hardware {
 	}
 
 	protected void end() {
-        Timer.delay(0.1);
+        Timer.delay(1.5);
+         if(Catapult.latch.get() == UNLOCKED) {
+            Catapult.latch.set(LOCKED); // set latch in
+        }
         inProgress = false;
 	}
 

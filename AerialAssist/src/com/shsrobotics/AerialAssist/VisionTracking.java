@@ -17,8 +17,10 @@ public class VisionTracking implements Hardware {
 	public static final boolean HOT_GOAL_RIGHT = true;
     public static boolean correctSide = false;
 	
-    public static final int LEFT_LINE = (int) (Camera.imageResolution.width * 0.25);
-    public static final int RIGHT_LINE = (int) (Camera.imageResolution.width * 0.75); 
+    public static final int LEFT_LINE_1 = (int) (Camera.imageResolution.width * 0.20);
+    public static final int LEFT_LINE_2 = (int) (Camera.imageResolution.width * 0.40);
+    public static final int RIGHT_LINE_1 = (int) (Camera.imageResolution.width * 0.60);
+    public static final int RIGHT_LINE_2 = (int) (Camera.imageResolution.width * 0.80); 
     
     public static void getInitialImage() {
         try {
@@ -47,18 +49,23 @@ public class VisionTracking implements Hardware {
         try {
 			Pointer subtracted = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
 			Pointer grayscale = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageU8, 0);
-			Timer.delay(3); // three second delay
              Images.after = camera.getImage();
+            
 			NIVision.subtract(subtracted, Images.after.image, Images.start.image); // subtract two images
+            NIVision.writeFile(subtracted, "sub.png");
 			NIVision.extractColorPlanes(
                 subtracted, NIVision.ColorMode.IMAQ_HSL, null, null, grayscale); // convert to grayscale
 			float[] averages = NIVision.getLinearAverages(
                 grayscale, LinearAverages.LinearAveragesMode.IMAQ_COLUMN_AVERAGES,
                 Camera.fullImage).getColumnAverages();
-			if (averages[LEFT_LINE] > averages[RIGHT_LINE]) {
+            float leftAvg = (averages[LEFT_LINE_1] + averages[LEFT_LINE_2]) / 2;
+            float rightAvg = (averages[RIGHT_LINE_1] + averages[RIGHT_LINE_2]) / 2;
+			if (leftAvg > rightAvg) {
 				Goal.left.setState(true); // hot goal is Left
+                System.out.println("Hot goal is on left VT");
 			} else {
 				Goal.right.setState(true); // hot goal is Right
+                System.out.println("Hot goal is on right VT");
 			}
 			
 			Images.start.free();
