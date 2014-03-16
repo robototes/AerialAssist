@@ -4,24 +4,20 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.FRCRobot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Team 2412
  */
 public class Main extends FRCRobot implements Hardware {
-//    SendableChooser autonomousPosition = new SendableChooser();
     double speed;  // roller speed
     boolean inProgress;
+    boolean hasShotTwice = false;
 
     public void robotInit() {
-//        autonomousPosition.addDefault("Left", Field.Position.left);
-//        autonomousPosition.addObject("Right", Field.Position.right);
         
         screen.println(Screen.line1, Screen.tab1, "TEAM 2412");
         screen.println(Screen.line3, Screen.tab4, "2014");
         
-//        SmartDashboard.putData("autonomousPosition", autonomousPosition);
         SmartDashboard.putNumber("Sonar stopping distance", 68.0);
         Timer.delay(7);
         VisionTracking.initializer();
@@ -37,38 +33,44 @@ public class Main extends FRCRobot implements Hardware {
 	}
 	
     public void autonomousInit() {
-        System.out.println("Autonomous Started");
-        if(DriverStation.getInstance().getDigitalIn(1)) {
-            Field.robotPosition = Field.Position.left;
-            System.out.println("Robot is on left");
-        } else {
-            Field.robotPosition = Field.Position.right;
-            System.out.println("Robot is on right");
-        }
         compressor.start();
-        Pickup.arms.set(ARMS_OUT);
+        Pickup.arms.set(EXTENDED);
         Timer.delay(1.3);
-        DriveRobot.driveForTime(-1.0, 1.0);
-        System.out.println("Starting vision tracking");
-        VisionTracking.run();
-        System.out.println("vision tracking done");
-        DriveRobot.driveUntilSonarSaysStop(SmartDashboard.getNumber("Sonar stopping distance") + SKID_DISTANCE);
-        System.out.println("Robot done driving");
-        Timer.delay(0.2);
-        if (VisionTracking.correctSide) {
-            System.out.println("Robot is on correct side");
-            new LaunchCatapult(CatapultPower.HIGH).start();
-            System.out.println("Robot has shot high");
+        if(!DriverStation.getInstance().getDigitalIn(2)){
+            if(DriverStation.getInstance().getDigitalIn(1)) {
+                Field.robotPosition = Field.Position.left;
+            } else {
+                Field.robotPosition = Field.Position.right;
+            }
+            DriveRobot.driveForTime(-1.0, 1.0);
+            VisionTracking.run();
+            DriveRobot.driveUntilSonarSaysStop(SmartDashboard.getNumber("Sonar stopping distance") + SKID_DISTANCE);
+            Timer.delay(0.2);
+            if (VisionTracking.correctSide) {
+                new LaunchCatapult(CatapultPower.HIGH).start();
+            } else {
+                Timer.delay(1.5);
+                new LaunchCatapult(CatapultPower.HIGH).start();
+            }
         } else {
-            System.out.println("Robot isn't on correct side");
-            Timer.delay(1.5);
+            Pickup.roller.set(0.2);  //test
+            DriveRobot.driveForTime(-1.0, 1.0);
+            DriveRobot.driveUntilSonarSaysStop(SmartDashboard.getNumber("Sonar stopping distance") + SKID_DISTANCE);
+            Pickup.roller.set(0.0);
+            Timer.delay(0.2);
             new LaunchCatapult(CatapultPower.HIGH).start();
-            System.out.println("Robot has shot high");
         }
     }
     
     public void autonomousPeriodic() {
         if (!LaunchCatapult.inProgress && !SonarDriveTask.inProgress) {
+            if (!hasShotTwice && !DriverStation.getInstance().getDigitalIn(2)) {
+                Pickup.roller.set(1.0);
+                Timer.delay(1.0);
+                Pickup.roller.set(0.0);
+                new LaunchCatapult(CatapultPower.HIGH).start();
+                hasShotTwice = true;
+            }
             DriveRobot.basicArcade(0.0, 0.0);
         }
     }
@@ -99,8 +101,6 @@ public class Main extends FRCRobot implements Hardware {
         DriveRobot.driveDirection = !Buttons.flip.held();
         DriveRobot.driveDirection = driverStick.getThrottle() > 0;
         
-     
-        
         // spin wheels
         speed = Loading.actualSpeed + coDriverStick.getX() * ROLLER_DIAL;
         if (speed > 1.0) {
@@ -110,16 +110,15 @@ public class Main extends FRCRobot implements Hardware {
             speed = 0;
         }
         if (!Buttons.armsUp.held()) {
-            Pickup.roller.set(Buttons.rollerIn.held() ? speed: 
-                Buttons.rollerOut.held() ? -speed : 0.0);
+            Pickup.roller.set(Buttons.rollerIn.held() ? -speed: 
+                Buttons.rollerOut.held() ? speed : 0.0);
         }
-        
         
         // catapult
         if (!inProgress) {
             
             // arms
-            Pickup.arms.set(!Buttons.armsUp.get());
+            Pickup.arms.set(!Buttons.armsUp.get() ? EXTENDED : RETRACTED);
         
             // dump
             Buttons.dump.whenPressed(new Dump(Buttons.dumpMode.get() ?

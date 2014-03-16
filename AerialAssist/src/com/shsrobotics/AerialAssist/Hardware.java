@@ -27,7 +27,7 @@ public interface Hardware extends Maps {
 	}
 	
 	public static final class Pickup {
-		public static final Solenoid arms = new Solenoid(TWELVE, SOLENOID_8);
+		public static final DoubleSolenoid arms = new DoubleSolenoid(TWELVE, SOLENOID_2, SOLENOID_3);
 		public static final Talon roller = new Talon(PWM_3);
         public static final DigitalInput loaded = new DigitalInput(DIGITAL_IO_2);
 	}

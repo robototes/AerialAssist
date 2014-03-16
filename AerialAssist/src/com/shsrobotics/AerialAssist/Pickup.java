@@ -11,7 +11,7 @@ public class Pickup extends Task implements Hardware {
 	}
 
 	protected void execute() {
-        Pickup.arms.set(ARMS_OUT);
+        Pickup.arms.set(EXTENDED);
     }
 
 	protected boolean isFinished() {
@@ -19,7 +19,7 @@ public class Pickup extends Task implements Hardware {
 	}
 
 	protected void end() {
-        Pickup.arms.set(ARMS_IN);
+        Pickup.arms.set(RETRACTED);
 	}
 
 }

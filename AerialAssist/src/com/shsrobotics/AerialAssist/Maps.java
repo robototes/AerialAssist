@@ -17,9 +17,6 @@ public interface Maps extends GLOBAL {
 	public static final IIR driverStick = new IIR(new IIR.Smoothing(50, 0, 25), USB_1);
 	public static final Joystick coDriverStick = new Joystick(USB_2);
     
-    public static final boolean ARMS_IN = false;
-    public static final boolean ARMS_OUT = true;
-    
     public static final int TWENTY_FOUR = 1;
     public static final int TWELVE = 2;
     

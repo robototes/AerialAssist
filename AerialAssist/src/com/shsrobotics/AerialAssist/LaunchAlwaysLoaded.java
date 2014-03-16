@@ -23,10 +23,10 @@ public class LaunchAlwaysLoaded extends Task implements Hardware {
     protected void initialize() {
         if (!inProgress) {
             inProgress = true;
-            if (Pickup.arms.get() == ARMS_IN) {
-                Pickup.arms.set(ARMS_OUT);
-                Timer.delay(3.0);
-            }
+//            if (Pickup.arms.get() == RETRACTED) {
+//                Pickup.arms.set(EXTENDED);
+//                Timer.delay(3.0);
+//            }
             Catapult.latch.set(UNLOCKED);
             Timer.delay(0.5);
             Catapult.setLauncher(RETRACTED);
