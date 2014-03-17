@@ -46,7 +46,7 @@ public class IIR extends Joystick {
         return accumulatorY;
     }
     
-	public static class Smoothing {
+    public static class Smoothing {
         public double x;
         public double y;
         public double z;

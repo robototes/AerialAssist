@@ -9,8 +9,6 @@ import com.sun.squawk.util.MathUtils;
 public class DriveRobot implements Hardware {
     public static boolean driveDirection = true; // true positive, false negative
     public static double lastValue;
-    private static double autonomousDriveFunctionConstant = 0;
-    private static double autonomousDriveFunctionDistance = 0;
     
     public static void basicTank(double leftAxis, double rightAxis) {
         DriveBase.drive.tankDrive(leftAxis, rightAxis);
@@ -42,42 +40,23 @@ public class DriveRobot implements Hardware {
         DriveBase.drive.arcadeDrive(moveValue, rotationValue, false);
     }
     
-	public static void advancedArcade() {
-		double y = driverStick.outputY();
-		double z = driverStick.outputZ();
+    public static void advancedArcade() {
+        double y = driverStick.outputY();
+        double z = driverStick.outputZ();
         double scale = Buttons.driveScale.held() ? 0.5 : 1.0;
-		y = MathUtils.pow(y, 3) * scale;
-		z = MathUtils.pow(z, 5) * 0.9 * scale;
+        y = MathUtils.pow(y, 3) * scale;
+        z = MathUtils.pow(z, 5) * 0.9 * scale;
 		
         if (driveDirection) {
             basicArcade(joystickCutoff(-y), joystickCutoff(z));
         } else {
             basicArcade(joystickCutoff(y), joystickCutoff(z));
         }
-	}
-    
-    public static void driveUntilSonarSaysStopPID(double distanceInInches) {
-        new SonarDriveTask(distanceInInches).start();
-    }
-    
-    public void initAutoDriveFunction(double time, double distance) {
-        autonomousDriveFunctionConstant = 2*(time/3-distance);
-        autonomousDriveFunctionDistance = distance;
-    }
-    
-    private double autonomousDriveFunction(double distance) {
-        return autonomousDriveFunctionConstant*distance*(distance - autonomousDriveFunctionDistance);
     }
     
     public static void driveUntilSonarSaysStop(double distanceInInches) {
         while (Sonar.sonar.getDistance() > distanceInInches) {
             basicArcade(-1.0, 0);
-//            if (lastValue - currentValue > 12.0) {
-//                currentValue = Sonar.sonar.getDistance();
-//            } else {
-//                currentValue -= 0.005;
-//            }
-//            lastValue = currentValue;
         }
     }
     
@@ -90,11 +69,11 @@ public class DriveRobot implements Hardware {
         }
     }
 	
-	private static double joystickCutoff(double x) {
+    private static double joystickCutoff(double x) {
         if(Math.abs(x) < 0.05) {
             return 0;
         } else {
             return x;
         }
-	}
+    }
 }

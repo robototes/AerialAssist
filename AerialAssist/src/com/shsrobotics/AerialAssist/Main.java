@@ -9,28 +9,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Team 2412
  */
 public class Main extends FRCRobot implements Hardware {
-    double speed;  // roller speed
-    boolean inProgress;
-    boolean hasShotTwice = false;
-
+    private double speed;  // roller speed
+    private boolean inProgress;
+    private boolean hasShotTwice = false;
+    private double DEFAULT_SONAR_DISTANCE = 68.0;
+    
     public void robotInit() {
-        
         screen.println(Screen.line1, Screen.tab1, "TEAM 2412");
         screen.println(Screen.line3, Screen.tab4, "2014");
         
-        SmartDashboard.putNumber("Sonar stopping distance", 68.0);
+        SmartDashboard.putNumber("Sonar stopping distance", DEFAULT_SONAR_DISTANCE);
         Timer.delay(7);
         VisionTracking.initializer();
         VisionTracking.getInitialImage();
     }
-
-	public void disabledInit() {
-    }
 	
-	public void disabledPeriodic() {
+    public void disabledPeriodic() {
         VisionTracking.getInitialImage();
         Timer.delay(1);
-	}
+    }
 	
     public void autonomousInit() {
         compressor.start();
@@ -63,10 +60,10 @@ public class Main extends FRCRobot implements Hardware {
     }
     
     public void autonomousPeriodic() {
-        if (!LaunchCatapult.inProgress && !SonarDriveTask.inProgress) {
+        if (!LaunchCatapult.inProgress) {
             if (!hasShotTwice && !DriverStation.getInstance().getDigitalIn(2)) {
                 Pickup.roller.set(1.0);
-                Timer.delay(1.0);
+                Timer.delay(1.0);  // test
                 Pickup.roller.set(0.0);
                 new LaunchCatapult(CatapultPower.HIGH).start();
                 hasShotTwice = true;
@@ -91,7 +88,7 @@ public class Main extends FRCRobot implements Hardware {
         SmartDashboard.putNumber("Sonar Distance (ft)", Sonar.sonar.getDistanceInFeet());
         
         // drive
-		DriveRobot.advancedArcade();
+        DriveRobot.advancedArcade();
         
         // gear shifting
         DriveBase.shifter.set((Buttons.shift.held()) ?

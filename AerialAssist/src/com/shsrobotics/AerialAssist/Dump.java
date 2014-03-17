@@ -43,7 +43,7 @@ public class Dump extends Task implements Hardware {
     }
 
 	protected boolean isFinished() {
-		return true;
+            return true;
 	}
 
 	protected void end() {

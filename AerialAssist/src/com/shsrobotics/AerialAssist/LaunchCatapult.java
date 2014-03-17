@@ -25,56 +25,55 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author RoboTotes Team 2412
  */
 public class LaunchCatapult extends Task implements Hardware {
-	private boolean preCharged;
-	public static boolean inProgress = false;
-    
-	public LaunchCatapult(boolean power) {
-		preCharged = power;
-	}
+    private boolean preCharged;
+    public static boolean inProgress = false;
 
-	protected void initialize() {
-		if (!inProgress) {
+    public LaunchCatapult(boolean power) {
+            preCharged = power;
+    }
+
+    protected void initialize() {
+        if (!inProgress) {
             inProgress = true;
 //            if (Pickup.arms.get() == RETRACTED) {
 //                Pickup.arms.set(EXTENDED);
 //                Timer.delay(3.0);
 //            }
-			if (preCharged) { // high
+            if (preCharged) { // high
                 if (Catapult.latch.get() == UNLOCKED) {
                     Catapult.latch.set(LOCKED);
                     Timer.delay(0.2);
                 }
-				Catapult.setLauncher(EXTENDED);
-				Timer.delay(0.20);
-				Catapult.latch.set(UNLOCKED);
-				Timer.delay(0.5);
-			} else { // low
+                Catapult.setLauncher(EXTENDED);
+                Timer.delay(0.20);
+                Catapult.latch.set(UNLOCKED);
+                Timer.delay(0.5);
+            } else { // low
                 if(Catapult.latch.get() == LOCKED) {
                     Catapult.latch.set(UNLOCKED); 
                     Timer.delay(0.01); 
                 }
-				Catapult.setLauncher(EXTENDED);
-				Timer.delay(2.0);
-			}
+                Catapult.setLauncher(EXTENDED);
+                Timer.delay(2.0);
+            }
             if(Catapult.latch.get() == UNLOCKED) {
                 Timer.delay(0.5);
             }
-		}
-	}
+        }
+    }
 
-	protected void execute() { }
+    protected void execute() { }
 
-	protected boolean isFinished() {
-		return true;
-	}
+    protected boolean isFinished() {
+            return true;
+    }
 
-	protected void end() {
-		Catapult.setLauncher(RETRACTED);
-		Timer.delay(2.0);
+    protected void end() {
+        Catapult.setLauncher(RETRACTED);
+        Timer.delay(2.0);
         if(Catapult.latch.get() == UNLOCKED) {
             Catapult.latch.set(LOCKED); // set latch in
         }
         inProgress = false;
-	}
-
+    }
 }
