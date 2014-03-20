@@ -26,8 +26,7 @@ public class Dump extends Task implements Hardware {
                 Timer.delay(0.2);
             }
             if(pwmMode) {
-                                Catapult.setLauncher(RETRACTED);
-
+                Pickup.checkArms();
                 Catapult.setLauncher(EXTENDED);
                 Timer.delay(0.2);
                 Catapult.setLauncher(RETRACTED);

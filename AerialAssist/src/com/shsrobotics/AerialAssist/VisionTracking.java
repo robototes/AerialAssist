@@ -49,7 +49,7 @@ public class VisionTracking implements Hardware {
             Pointer grayscale = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageU8, 0);
             Images.after = camera.getImage();
             
-            NIVision.subtract(subtracted, Images.after.image, Images.start.image); // subtract two images
+//            NIVision.subtract(subtracted, Images.after.image, Images.start.image); // subtract two images
             NIVision.writeFile(subtracted, "sub.png");
             NIVision.extractColorPlanes(subtracted, NIVision.ColorMode.IMAQ_HSL, null, null, grayscale); // convert to grayscale
             float[] averages = NIVision.getLinearAverages(
