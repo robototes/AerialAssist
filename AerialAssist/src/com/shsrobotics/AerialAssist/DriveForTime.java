@@ -2,8 +2,7 @@ package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.library.Task;
 
-/**
- * Task for driving a given amount of time.
+/**Task for driving a given amount of time.
  * @author RoboTotes Team 2412
  */
 public class DriveForTime extends Task {

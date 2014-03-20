@@ -52,10 +52,16 @@ public class DriveRobot implements Hardware {
     }
     
     public static void driveUntilSonarSaysStop(double distanceInInches) {
-        while (Sonar.sonar.getDistance() > distanceInInches) {
+//        while (Sonar.sonar.getDistance() > distanceInInches) {
+//            basicArcade(1.0, 0);
+//        }
+//        basicArcade(0.0, 0.0);
+    }
+    
+    public static void driveUntilSonarSaysStop() {
+        while(!Sonar.autonomousSonar.get()) {
             basicArcade(1.0, 0);
         }
-        basicArcade(0.0, 0.0);
     }
     
     public static void driveForTime(double translationAxis, double seconds) {

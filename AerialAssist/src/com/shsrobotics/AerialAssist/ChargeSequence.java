@@ -3,8 +3,7 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.Task;
 import edu.wpi.first.wpilibj.Timer;
 
-/**
- * Task to enter Robot into charged shooting sequence.
+/**Task to enter Robot into charged shooting sequence.
  * To be used in combination with LaunchAlwaysLoaded.
  * @author RoboTotes Team 2412
  */

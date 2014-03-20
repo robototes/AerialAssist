@@ -56,7 +56,9 @@ public interface Hardware extends Maps {
     }
 
     public static final class Sonar {
-        public static final MaxBotixSonar sonar = new MaxBotixSonar(ANALOG_7);
+//        public static final MaxBotixSonar sonar = new MaxBotixSonar(ANALOG_7);
+        public static final DigitalInput autonomousSonar = new DigitalInput(1);
+        public static final DigitalInput teleopSonar = new DigitalInput(2);
     }
     
     public static final class Trans {

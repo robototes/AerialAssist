@@ -31,7 +31,7 @@ public interface Maps extends GLOBAL {
     public static final class Autonomous {
         public static final boolean 
                 TWO_BALL_AUTONOMOUS = DriverStation.getInstance().getDigitalIn(2),
-                LEFT_AUTONOMOUS = DriverStation.getInstance().getDigitalIn(1);
+                DRIVE_FOR_TIME = DriverStation.getInstance().getDigitalIn(1);
     }
     
     public static final class Arms {

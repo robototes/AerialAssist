@@ -23,7 +23,12 @@ public class Main extends FRCRobot implements Hardware {
         Timer.delay(1.3);
         if(Autonomous.TWO_BALL_AUTONOMOUS){
             Pickup.roller.set(-0.6);
-            DriveRobot.driveForTime(1.0, SmartDashboard.getNumber("Autonomous Drive Time"));
+            if(Autonomous.DRIVE_FOR_TIME) {
+                DriveRobot.driveForTime(1.0, SmartDashboard.getNumber("Autonomous Drive Time"));
+            } else {
+                DriveRobot.driveForTime(1.0, 1.0); // ensures that we will get accurate sonar reading
+                DriveRobot.driveUntilSonarSaysStop();
+            }
             new DriveForTime(10.0, 0.0).start(); // ensures that robot will not move
             Pickup.roller.set(0.0);
             new LaunchCatapult(CatapultPower.HIGH).start();
@@ -32,8 +37,13 @@ public class Main extends FRCRobot implements Hardware {
             Timer.delay(1.5);
             Pickup.roller.set(0.0);
             new LaunchCatapult(CatapultPower.HIGH).start();
-        } else { // one ball autonomous, no vision tracking or sonar
-            DriveRobot.driveForTime(1.0, SmartDashboard.getNumber("Autonomous Drive Time"));
+        } else { // one ball autonomous, no vision tracking
+          if(Autonomous.DRIVE_FOR_TIME) {
+                DriveRobot.driveForTime(1.0, SmartDashboard.getNumber("Autonomous Drive Time"));
+            } else {
+                DriveRobot.driveForTime(1.0, 1.0);
+                DriveRobot.driveUntilSonarSaysStop();
+            }
             new DriveForTime(10.0, 0.0).start();
             new LaunchCatapult(CatapultPower.HIGH).start();
         }
@@ -55,10 +65,10 @@ public class Main extends FRCRobot implements Hardware {
         boolean inProgress = Dump.inProgress || LaunchAlwaysLoaded.inProgress || LaunchCatapult.inProgress;
         
         // Smart Dashboard
-        SmartDashboard.putBoolean("In Range", InGoalRange.inGoalRange());
+        SmartDashboard.putBoolean("In Range", Sonar.teleopSonar.get());
         SmartDashboard.putBoolean("Latch", Catapult.latch.get());
         SmartDashboard.putBoolean("Compressor", compressor.getPressureSwitchValue());
-        SmartDashboard.putNumber("Sonar Distance (ft)", Sonar.sonar.getDistanceInFeet());
+//        SmartDashboard.putNumber("Sonar Distance (ft)", Sonar.sonar.getDistanceInFeet());
         SmartDashboard.putNumber("Transducer Value", Trans.transducer.getPressure() * 2);
         
         // drive
