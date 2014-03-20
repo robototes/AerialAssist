@@ -2,7 +2,6 @@ package com.shsrobotics.AerialAssist;
 
 import com.shsrobotics.AerialAssist.Maps.Field.*;
 import com.sun.cldc.jna.Pointer;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.LinearAverages;
 import edu.wpi.first.wpilibj.image.NIVision;
 
@@ -42,8 +41,8 @@ public class VisionTracking implements Hardware {
     }
     
     private static void detectSide() {
-        Goal.right.setState(false);
-        Goal.left.setState(false);
+        Goal.RIGHT.setState(false);
+        Goal.LEFT.setState(false);
 		
         try {
             Pointer subtracted = NIVision.imaqCreateImage(NIVision.ImageType.imaqImageRGB, 0);
@@ -59,10 +58,10 @@ public class VisionTracking implements Hardware {
             float leftAvg = (averages[LEFT_LINE_1] + averages[LEFT_LINE_2]) / 2;
             float rightAvg = (averages[RIGHT_LINE_1] + averages[RIGHT_LINE_2]) / 2;
             if (leftAvg > rightAvg) {
-                Goal.left.setState(true); // hot goal is Left
+                Goal.LEFT.setState(true); // hot goal is Left
                 System.out.println("Hot goal is on left VT");
             } else {
-                Goal.right.setState(true); // hot goal is Right
+                Goal.RIGHT.setState(true); // hot goal is Right
                 System.out.println("Hot goal is on right VT");
             }
 			
@@ -79,8 +78,8 @@ public class VisionTracking implements Hardware {
 	}	
     
     private static void setCorrectSide() {
-        if (!Goal.left.isHot && Field.robotPosition == Position.left ||
-			!Goal.right.isHot && Field.robotPosition == Position.right) { // incorrect side
+        if (!Goal.LEFT.isHot && Field.robotPosition == Position.LEFT ||
+			!Goal.RIGHT.isHot && Field.robotPosition == Position.RIGHT) { // incorrect side
             correctSide = false;
         } else {
             correctSide = true;

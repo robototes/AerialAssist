@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.shsrobotics.AerialAssist;
 
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 
-/**
- *
+/** Enables the driver to edit hardware values via SmartDashboard.
+ * Under-construction.
  * @author RoboTotes Team 2412
  */
 public class HardwareSendable implements NamedSendable, Hardware {

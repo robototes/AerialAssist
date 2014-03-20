@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.shsrobotics.AerialAssist;
 
-import com.shsrobotics.library.PIDHardware;
 import com.shsrobotics.library.Task;
-import com.shsrobotics.library.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
+/** Task for shooting the ball fully charged regardless of anything.
  * @author RoboTotes Team 2412
  */
 public class LaunchAlwaysLoaded extends Task implements Hardware {
@@ -23,21 +13,16 @@ public class LaunchAlwaysLoaded extends Task implements Hardware {
     protected void initialize() {
         if (!inProgress) {
             inProgress = true;
-//            if (Pickup.arms.get() == RETRACTED) {
-//                Pickup.arms.set(EXTENDED);
-//                Timer.delay(3.0);
-//            }
-            Catapult.latch.set(UNLOCKED);
+            Pickup.checkArms();
+            Catapult.latch.set(Latch.UNLOCKED);
             Timer.delay(0.5);
             Catapult.setLauncher(RETRACTED);
             Timer.delay(2.0);
-            Catapult.latch.set(LOCKED);
+            Catapult.latch.set(Latch.LOCKED);
         }
     }
     
-    protected void execute() {
-        
-    }
+    protected void execute() { }
     
     protected boolean isFinished() {
         return true;
@@ -45,7 +30,5 @@ public class LaunchAlwaysLoaded extends Task implements Hardware {
     
     protected void end() {
         inProgress = false;
-        
     }
-    
 }
