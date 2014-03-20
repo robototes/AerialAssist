@@ -65,7 +65,7 @@ public class Main extends FRCRobot implements Hardware {
         boolean inProgress = Dump.inProgress || LaunchAlwaysLoaded.inProgress || LaunchCatapult.inProgress;
         
         // Smart Dashboard
-        SmartDashboard.putBoolean("In Range", Sonar.teleopSonar.get());
+        SmartDashboard.putBoolean("In Range", !Sonar.teleopSonar.get());
         SmartDashboard.putBoolean("Latch", Catapult.latch.get());
         SmartDashboard.putBoolean("Compressor", compressor.getPressureSwitchValue());
 //        SmartDashboard.putNumber("Sonar Distance (ft)", Sonar.sonar.getDistanceInFeet());

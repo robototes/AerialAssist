@@ -59,7 +59,7 @@ public class DriveRobot implements Hardware {
     }
     
     public static void driveUntilSonarSaysStop() {
-        while(!Sonar.autonomousSonar.get()) {
+        while(Sonar.autonomousSonar.get()) {
             basicArcade(1.0, 0);
         }
     }
