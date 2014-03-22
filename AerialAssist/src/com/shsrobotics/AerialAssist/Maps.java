@@ -4,7 +4,6 @@ import com.shsrobotics.library.GLOBAL;
 import com.shsrobotics.library.JoystickButton;
 import com.shsrobotics.library.joysticks.Extreme3DController;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -24,7 +23,6 @@ public interface Maps extends GLOBAL {
 
     public static final double MAX_PRESSURE = 120.0;
     public static final Timer DRIVE_TIMER = new Timer();
-    
 
     public static final class Camera {
 
@@ -34,7 +32,8 @@ public interface Maps extends GLOBAL {
 
     public static final class Autonomous {
 
-        public static boolean TWO_BALL_AUTONOMOUS,
+        public static boolean 
+            TWO_BALL_AUTONOMOUS,
             LEFT_SIDE;
         public static double DRIVING_TIME =  SmartDashboard.getNumber("Autonomous Drive Time");
     }
@@ -45,16 +44,9 @@ public interface Maps extends GLOBAL {
             IN = RETRACTED;
     }
 
-    public static final class SonarValues {
-
-        public static final double DEFAULT_SONAR_DISTANCE = 68.0, // in
-            MIN_RANGE = 65.0, // in
-            MAX_RANGE = 105.0; // in
-    }
-
     public static final class Modules {
-
-        public static final int TWENTY_FOUR = 1,
+        public static final int 
+            TWENTY_FOUR = 1,
             TWELVE = 2;
     }
 
@@ -90,13 +82,13 @@ public interface Maps extends GLOBAL {
     public static final class Drive {
 
         public static final double DRIVE_SCALE = 0.7;
-        public static final boolean HIGH_GEAR = true,
+        public static final boolean 
+            HIGH_GEAR = true,
             LOW_GEAR = false;
         public static boolean DRIVE_DIRECTION = true; // true positive, false negative
     }
 
     public static final class CatapultPower {
-
         public static final boolean
             HIGH = true,
             LOW = false;
@@ -119,7 +111,8 @@ public interface Maps extends GLOBAL {
 
     public static final class RollerValues {
 
-        public static final double ACTUAL_SPEED = 0.75,
+        public static final double 
+            ACTUAL_SPEED = 0.75,
             ROLLER_DIAL = -0.25;
     }
 
@@ -129,7 +122,8 @@ public interface Maps extends GLOBAL {
 
         public static final class Goal {
 
-            public static final Goal LEFT = new Goal(1),
+            public static final Goal 
+                LEFT = new Goal(1),
                 RIGHT = new Goal(2);
 
             private final int value;
@@ -146,7 +140,8 @@ public interface Maps extends GLOBAL {
 
         public static final class Position {
 
-            public static final Position LEFT = new Position(1),
+            public static final Position 
+                LEFT = new Position(1),
                 RIGHT = new Position(2);
 
             private final int value;

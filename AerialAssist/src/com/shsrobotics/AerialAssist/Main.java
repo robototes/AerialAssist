@@ -10,34 +10,33 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Team 2412
  */
 public class Main extends FRCRobot implements Hardware {
-    
     DriveForTime stop = new DriveForTime(10.0, 0.0);
-    
+
     public void robotInit() {
         screen.println(Screen.line1, Screen.tab1, "TEAM 2412");
         screen.println(Screen.line3, Screen.tab4, "2014");
         screen.updateLCD();
-        
+
         SmartDashboard.putNumber("Autonomous Drive Time", 2.5);
         SmartDashboard.putNumber("Autonomous Shoot Time", 1.2);
-        
-//        Timer.delay(7);
-//        VisionTracking.initializer();
-//        VisionTracking.getInitialImage();
+
+        Timer.delay(7);
+        VisionTracking.initializer();
+        VisionTracking.getInitialImage();
     }
 
     public void autonomousInit() {
         Autonomous.TWO_BALL_AUTONOMOUS = DriverStation.getInstance().getDigitalIn(2);
         Autonomous.LEFT_SIDE = DriverStation.getInstance().getDigitalIn(1);
         double shootNow = SmartDashboard.getNumber("Autonomous Shoot Time");
-        Autonomous.DRIVING_TIME =  SmartDashboard.getNumber("Autonomous Drive Time");
+        Autonomous.DRIVING_TIME = SmartDashboard.getNumber("Autonomous Drive Time");
         Pneumatics.compressor.start();
         Catapult.latch.set(Latch.LOCKED);
-        Pickup.arms.set(Arms.OUT);
         DriveForTime dft = new DriveForTime(Autonomous.DRIVING_TIME, 1.0);
-        DriveForTime stop = new DriveForTime(10, 0.0);
-        Timer.delay(1.3);
+        DriveForTime halt = new DriveForTime(10, 0.0);
         if (Autonomous.TWO_BALL_AUTONOMOUS) {
+            Pickup.arms.set(Arms.OUT);
+            Timer.delay(1.3);
             Pickup.roller.set(-0.6);
             Catapult.setLauncher(EXTENDED);
             dft.start();
@@ -45,7 +44,6 @@ public class Main extends FRCRobot implements Hardware {
             Catapult.latch.set(Latch.UNLOCKED);
             Timer.delay(shootNow);
             Catapult.setLauncher(RETRACTED);
-            stop.start(); // ensures that robot will not move
             Pickup.roller.set(0.0);
             Timer.delay(1.5);
             Pickup.roller.set(-0.8);
@@ -58,13 +56,14 @@ public class Main extends FRCRobot implements Hardware {
             new LaunchCatapult(CatapultPower.HIGH).start();
         } else { // one ball autonomous, vision tracking
             Field.Position.setRobotPosition(Autonomous.LEFT_SIDE ? Position.LEFT : Position.RIGHT);
-//            VisionTracking.run();
+            Pickup.arms.set(Arms.OUT);
+            Timer.delay(0.3);
+            VisionTracking.run();
             DriveRobot.driveForTime(1.0, SmartDashboard.getNumber("Autonomous Drive Time"));
-            stop.start();
             Timer.delay(1.0);
-//            if (!VisionTracking.correctSide) {
-//                Timer.delay(1.5);
-//            }
+            if (!VisionTracking.correctSide) {
+                Timer.delay(1.0); // wait for hot goal
+            }
             new LaunchCatapult(CatapultPower.HIGH).start();
         }
     }
@@ -76,8 +75,8 @@ public class Main extends FRCRobot implements Hardware {
     }
 
     public void disabledPeriodic() {
-//        VisionTracking.getInitialImage();
-//        Timer.delay(0.5);
+        VisionTracking.getInitialImage();
+        Timer.delay(0.5);
         CatapultPower.LEFT_SOLENOID_OFF = false;
         CatapultPower.RIGHT_SOLENOID_OFF = false;
     }

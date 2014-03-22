@@ -5,6 +5,11 @@ import edu.wpi.first.wpilibj.Timer;
 
 /** Task for the Dumping sequence.
  * Two modes: PWM or Single.
+=======
+/**
+ * Task for the Dumping sequence. Two modes: PWM or Single.
+ *
+>>>>>>> 38345ad27e79c0972cf32349c604b82c10f1d9a6
  * @author RoboTotes Team 2412
  */
 public class Dump extends Task implements Hardware {
@@ -31,7 +36,7 @@ public class Dump extends Task implements Hardware {
                 Timer.delay(0.2);
                 Catapult.setLauncher(RETRACTED);
                 Timer.delay(0.5);
-            } else {    
+            } else {
                 Catapult.launchRight.set(EXTENDED);
                 Timer.delay(3.0);
                 Catapult.launchRight.set(RETRACTED);
@@ -46,7 +51,7 @@ public class Dump extends Task implements Hardware {
 
     protected void end() {
         Timer.delay(1.5);
-        if(Catapult.latch.get() == Latch.UNLOCKED) {
+        if (Catapult.latch.get() == Latch.UNLOCKED) {
             Catapult.latch.set(Latch.LOCKED); // set latch in
         }
         inProgress = false;

@@ -14,7 +14,6 @@ public class DriveForTime extends Task {
         this.time = time;
         this.speed = speed;
     }
-    
     protected void initialize() {
         DriveRobot.DRIVE_TIMER.reset();
         DriveRobot.DRIVE_TIMER.start();
