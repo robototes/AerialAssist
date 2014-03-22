@@ -3,32 +3,30 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.Task;
 import edu.wpi.first.wpilibj.Timer;
 
-/*
+/** Task for the Dumping sequence.
+ * Two modes: PWM or Single.
  * @author RoboTotes Team 2412
  */
 public class Dump extends Task implements Hardware {
+
     private boolean pwmMode; // true = pwm, false = single
     public static boolean inProgress = false;
     
-	protected void initialize() {
-	}
+    protected void initialize() { }
     
     public Dump(boolean mode) {
         pwmMode = mode;
     }
     
-	protected void execute() {
+    protected void execute() {
         if (!inProgress) {
             inProgress = true;
-//            if (Pickup.arms.get() == RETRACTED) {
-//                Pickup.arms.set(EXTENDED);
-//                Timer.delay(3.0);
-//            }
-            if (Catapult.latch.get() == LOCKED) {
-                Catapult.latch.set(UNLOCKED);
+            if (Catapult.latch.get() == Latch.LOCKED) {
+                Catapult.latch.set(Latch.UNLOCKED);
                 Timer.delay(0.2);
             }
             if(pwmMode) {
+                Pickup.checkArms();
                 Catapult.setLauncher(EXTENDED);
                 Timer.delay(0.2);
                 Catapult.setLauncher(RETRACTED);
@@ -42,16 +40,15 @@ public class Dump extends Task implements Hardware {
         }
     }
 
-	protected boolean isFinished() {
-		return true;
-	}
+    protected boolean isFinished() {
+        return true;
+    }
 
-	protected void end() {
+    protected void end() {
         Timer.delay(1.5);
-         if(Catapult.latch.get() == UNLOCKED) {
-            Catapult.latch.set(LOCKED); // set latch in
+        if(Catapult.latch.get() == Latch.UNLOCKED) {
+            Catapult.latch.set(Latch.LOCKED); // set latch in
         }
         inProgress = false;
-	}
-
+    }
 }

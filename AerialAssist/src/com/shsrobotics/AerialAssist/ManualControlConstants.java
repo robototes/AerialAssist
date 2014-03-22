@@ -1,20 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.shsrobotics.AerialAssist;
 
-
 /**
- *
  * @author RoboTotes Team 2412
  */
 public class ManualControlConstants {
-    private ManualControlConstants() {
-    }
-    
+    private ManualControlConstants() { }
     
     public static final String MANUAL_CONTROL_SYS_LIST = "MANCON_SYS_LIST";
     public static final String MANUAL_SYS_COUNT = "MANCON_SYS_NUM";
@@ -31,7 +21,7 @@ public class ManualControlConstants {
     public static final String MANUAL_CONTROL_CATAPULT_LEFTSOLENOID = "B!CATAPULTLEFT";
     public static final String MANUAL_CONTROL_CATAPULT_RIGHTSOLENOID = "B!CATAPULTRIGHT";
     public static final String MANUAL_CONTROL_CATAPULT_LATCHSOLENOID = "B!CATAPULTLATCH";
-    public static final String MANCON_CONTROL_CATAPULT_ENABLE = MANUAL_CONTROL_CATAPULT + MANUAL_CONTROL_ENABLETAG;
+    public static final String MANUAL_CONTROL_CATAPULT_ENABLE = MANUAL_CONTROL_CATAPULT + MANUAL_CONTROL_ENABLETAG;
     public static final String MANUAL_CONTROL_CATAPULT_LIST = MANUAL_CONTROL_CATAPULT_LEFTSOLENOID + S + MANUAL_CONTROL_CATAPULT_RIGHTSOLENOID + S + MANUAL_CONTROL_CATAPULT_LATCHSOLENOID;
  
     public static final String MANUAL_CONTROL_PICKUP_ENABLE = MANUAL_CONTROL_PICKUP + MANUAL_CONTROL_ENABLETAG;
@@ -49,6 +39,4 @@ public class ManualControlConstants {
     public static final String MANUAL_CONTROL_DRIVE_WHEELS_LEFT = "D!WHEELSLEFT";
     public static final String MANUAL_CONTROL_DRIVE_WHEELS_RIGHT = "D!WHEELSRIGHT";
     public static final String MANUAL_CONTROL_DRIVE_LIST = MANUAL_CONTROL_DRIVE_SHIFTER + S + MANUAL_CONTROL_DRIVE_WHEELS_LEFT + S + MANUAL_CONTROL_DRIVE_WHEELS_RIGHT;
-    
-    
 }

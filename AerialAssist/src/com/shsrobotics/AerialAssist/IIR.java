@@ -2,6 +2,9 @@ package com.shsrobotics.AerialAssist;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/** IIR filters joystick values and smooths driving.
+ * @author RoboTotes Team 2412
+ */
 public class IIR extends Joystick {
     private double smoothingX;
     private double smoothingY;
@@ -46,7 +49,7 @@ public class IIR extends Joystick {
         return accumulatorY;
     }
     
-	public static class Smoothing {
+    public static class Smoothing {
         public double x;
         public double y;
         public double z;
