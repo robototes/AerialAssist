@@ -3,16 +3,19 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.Task;
 import edu.wpi.first.wpilibj.Timer;
 
-/** Task for shooting the catapult.
- * Two modes: high power (latched) or low (unlatched)
+/**
+ * Task for shooting the catapult. Two modes: high power (latched) or low
+ * (unlatched)
+ *
  * @author RoboTotes Team 2412
  */
 public class LaunchCatapult extends Task implements Hardware {
+
     private boolean high;
     public static boolean inProgress = false;
 
     public LaunchCatapult(boolean power) {
-            high = power;
+        high = power;
     }
 
     protected void initialize() {
@@ -31,17 +34,18 @@ public class LaunchCatapult extends Task implements Hardware {
         }
     }
 
-    protected void execute() { }
+    protected void execute() {
+    }
 
     protected boolean isFinished() {
-            return true;
+        return true;
     }
 
     protected void end() {
         Catapult.setLauncher(RETRACTED);
         Timer.delay(2.0);
-        if(high) { // aka latch = locked
-            Catapult.latch.set(Latch.LOCKED); // set latch in
+        if (high) { // latch should relock
+            Catapult.latch.set(Latch.LOCKED);
         }
         inProgress = false;
     }

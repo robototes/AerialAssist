@@ -3,13 +3,15 @@ package com.shsrobotics.AerialAssist;
 import com.shsrobotics.library.Task;
 import edu.wpi.first.wpilibj.Timer;
 
-/** Task for shooting the ball fully charged regardless of anything.
+/**
+ * Task for shooting the ball fully charged regardless of anything.
+ *
  * @author RoboTotes Team 2412
  */
 public class LaunchAlwaysLoaded extends Task implements Hardware {
-    
+
     public static boolean inProgress = false;
-    
+
     protected void initialize() {
         if (!inProgress) {
             inProgress = true;
@@ -21,13 +23,14 @@ public class LaunchAlwaysLoaded extends Task implements Hardware {
             Catapult.latch.set(Latch.LOCKED);
         }
     }
-    
-    protected void execute() { }
-    
+
+    protected void execute() {
+    }
+
     protected boolean isFinished() {
         return true;
     }
-    
+
     protected void end() {
         inProgress = false;
     }
